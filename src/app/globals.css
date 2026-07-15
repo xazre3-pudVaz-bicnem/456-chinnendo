@@ -1,0 +1,258 @@
+@import "tailwindcss";
+
+@theme {
+  /* ---- Fonts ---- */
+  --font-sans: var(--font-noto-sans), "Hiragino Kaku Gothic ProN", "Yu Gothic",
+    Meiryo, sans-serif;
+  --font-serif: var(--font-noto-serif), "Hiragino Mincho ProN", "Yu Mincho",
+    "MS PMincho", serif;
+  --font-en: var(--font-cormorant), Georgia, serif;
+
+  /* ---- Paper / 背景（白・生成り・薄いベージュ）---- */
+  --color-paper-50: #ffffff;
+  --color-paper-100: #f8f6ef; /* 生成り（ベース背景）*/
+  --color-paper-200: #f0ece0; /* 薄いベージュ（セクション背景）*/
+  --color-paper-300: #e4ddcc; /* ボーダー */
+  --color-paper-400: #d2c8b2;
+
+  /* ---- Moss（深い緑・メインカラー）---- */
+  --color-moss-400: #5c7d61;
+  --color-moss-500: #4a6b4f;
+  --color-moss-600: #3c5a41; /* primary */
+  --color-moss-700: #2f4834; /* primary-dark（見出し・濃い面）*/
+  --color-moss-800: #243629;
+  --color-moss-900: #18241c;
+
+  /* ---- Wakaba（淡い若草色・アクセント）---- */
+  --color-wakaba-200: #d9e5c8;
+  --color-wakaba-300: #bcd0a3;
+  --color-wakaba-400: #9fbb82; /* secondary（アクセント）*/
+  --color-wakaba-500: #82a266;
+
+  /* ---- Gold（上品な金・黄土。ごく少量のアクセント）---- */
+  --color-gold-300: #d9c188;
+  --color-gold-400: #c9a95f;
+  --color-gold-500: #b6924a;
+
+  /* ---- Ink（本文・落ち着いた灰色。わずかに温かみ）---- */
+  --color-ink-400: #8b8b82;
+  --color-ink-500: #70706a;
+  --color-ink-600: #565650; /* 本文 */
+  --color-ink-700: #3d3d38;
+  --color-ink-800: #29292500; /* placeholder，overwritten below */
+  --color-ink-900: #1c1c19;
+
+  /* ---- Spacing extras ---- */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-30: 7.5rem;
+
+  /* ---- Max width ---- */
+  --container-8xl: 88rem;
+}
+
+/* ink-800 の正しい値（@theme内の桁ミス回避のため個別指定）*/
+@theme {
+  --color-ink-800: #292925;
+}
+
+/* ============================================================
+   CSS変数エイリアス（仕様準拠の分かりやすい名前）
+   ============================================================ */
+:root {
+  --color-primary: var(--color-moss-600);
+  --color-primary-dark: var(--color-moss-700);
+  --color-secondary: var(--color-wakaba-400);
+  --color-background: var(--color-paper-100);
+  --color-background-subtle: var(--color-paper-200);
+  --color-text: var(--color-ink-700);
+  --color-text-muted: var(--color-ink-500);
+  --color-border: var(--color-paper-300);
+  --color-accent: var(--color-gold-400);
+}
+
+/* ---- Base ---- */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-paper-100);
+  color: var(--color-ink-700);
+  font-feature-settings: "palt";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  /* 本文16px以上（高齢者にも読みやすく）*/
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+::selection {
+  background-color: var(--color-moss-700);
+  color: var(--color-paper-50);
+}
+
+/* 見出しは明朝体（静けさ・上品さ）*/
+.font-heading {
+  font-family: var(--font-serif);
+  letter-spacing: 0.02em;
+  font-weight: 500;
+}
+
+/* 細い装飾ルール（見出し脇の短い線）*/
+.rule-accent::before {
+  content: "";
+  display: inline-block;
+  width: 2.25rem;
+  height: 1px;
+  background-color: var(--color-gold-400);
+  vertical-align: middle;
+  margin-right: 0.75rem;
+}
+
+/* ごく薄い紙／和紙のような地紋（写真が無くても破綻しない背景）*/
+.bg-washi {
+  background-color: var(--color-paper-100);
+  background-image:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(159, 187, 130, 0.06) 0,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 85% 75%,
+      rgba(60, 90, 65, 0.05) 0,
+      transparent 45%
+    );
+}
+
+/* 薄い罫線グリッド（濃い面の上に木漏れ日のような陰影）*/
+.bg-grid-soft {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* フォーカスリング（キーボード操作の明示）*/
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-moss-600);
+  outline-offset: 2px;
+}
+
+/* Reveal-on-scroll（JS無効でも表示される段階的強化）*/
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  /* ヒーロー画像の緩やかなズーム */
+  .ken-burns {
+    animation: kenBurns 18s ease-out both;
+  }
+  @keyframes kenBurns {
+    from {
+      transform: scale(1.08);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+}
+
+/* prefers-reduced-motion 尊重：アニメーションを無効化 */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .ken-burns {
+    animation: none;
+  }
+}
+
+/* iPhone セーフエリア対応（下部固定ナビ）*/
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* 記事本文（Markdown → HTML）のタイポグラフィ */
+.prose-column {
+  color: var(--color-ink-700);
+  line-height: 2;
+}
+.prose-column h2 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-moss-700);
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-paper-300);
+  letter-spacing: 0.02em;
+}
+.prose-column h3 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-moss-700);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.prose-column p {
+  margin-bottom: 1.35rem;
+}
+.prose-column ul,
+.prose-column ol {
+  margin: 0 0 1.5rem 1.25rem;
+}
+.prose-column ul {
+  list-style: none;
+}
+.prose-column ul li {
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 0.6rem;
+}
+.prose-column ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.85em;
+  width: 0.4rem;
+  height: 0.4rem;
+  background-color: var(--color-wakaba-400);
+  border-radius: 9999px;
+}
+.prose-column ol {
+  list-style: decimal;
+}
+.prose-column ol li {
+  margin-bottom: 0.6rem;
+  padding-left: 0.35rem;
+}
+.prose-column strong {
+  color: var(--color-moss-700);
+  font-weight: 700;
+}
+.prose-column a {
+  color: var(--color-moss-600);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-column blockquote {
+  border-left: 3px solid var(--color-wakaba-400);
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  margin: 0 0 1.5rem;
+  color: var(--color-ink-600);
+  background: var(--color-paper-100);
+}
