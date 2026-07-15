@@ -33,13 +33,14 @@
   --color-gold-300: #d9c188;
   --color-gold-400: #c9a95f;
   --color-gold-500: #b6924a;
+  --color-gold-600: #85662f; /* 小さめテキスト用（コントラストAA確保） */
 
   /* ---- Ink（本文・落ち着いた灰色。わずかに温かみ）---- */
-  --color-ink-400: #8b8b82;
+  --color-ink-400: #73736b; /* 小テキストでもAAを満たす明度 */
   --color-ink-500: #70706a;
   --color-ink-600: #565650; /* 本文 */
   --color-ink-700: #3d3d38;
-  --color-ink-800: #29292500; /* placeholder，overwritten below */
+  --color-ink-800: #292925;
   --color-ink-900: #1c1c19;
 
   /* ---- Spacing extras ---- */
@@ -49,11 +50,6 @@
 
   /* ---- Max width ---- */
   --container-8xl: 88rem;
-}
-
-/* ink-800 の正しい値（@theme内の桁ミス回避のため個別指定）*/
-@theme {
-  --color-ink-800: #292925;
 }
 
 /* ============================================================
@@ -75,6 +71,7 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -141,9 +138,10 @@ body {
   outline-offset: 2px;
 }
 
-/* Reveal-on-scroll（JS無効でも表示される段階的強化）*/
+/* Reveal-on-scroll（段階的強化）
+   非表示スタイルは html.js が付いた場合のみ適用 → JS無効環境でも必ず表示される */
 @media (prefers-reduced-motion: no-preference) {
-  .reveal {
+  html.js .reveal {
     opacity: 0;
     transform: translateY(24px);
     transition:
@@ -151,7 +149,7 @@ body {
       transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform;
   }
-  .reveal.is-visible {
+  html.js .reveal.is-visible {
     opacity: 1;
     transform: none;
   }

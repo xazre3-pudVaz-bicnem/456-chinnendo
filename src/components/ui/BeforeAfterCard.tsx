@@ -41,7 +41,7 @@ export default function BeforeAfterCard({ item }: { item: WorkCase }) {
             {item.service}
           </span>
           {preparing && (
-            <span className="border border-gold-400 px-2.5 py-1 text-xs text-gold-500">
+            <span className="border border-gold-400 px-2.5 py-1 text-xs text-gold-600">
               写真はイメージ・実事例準備中
             </span>
           )}

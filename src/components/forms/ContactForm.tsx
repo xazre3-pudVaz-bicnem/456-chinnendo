@@ -15,8 +15,9 @@ import { siteConfig } from "@/data/site";
 type Status = "idle" | "sending" | "success" | "not_configured" | "error";
 
 const labelCls = "block text-sm font-medium text-moss-700 mb-2";
+// text-base(16px)：iOS Safariのフォーカス時自動ズームを防ぐ
 const inputCls =
-  "w-full border border-paper-400 bg-paper-50 px-4 py-3 text-[15px] text-ink-800 rounded-none focus:outline-none focus:border-moss-600 focus:ring-1 focus:ring-moss-600 transition-colors";
+  "w-full border border-paper-400 bg-paper-50 px-4 py-3 text-base text-ink-800 rounded-none focus:outline-none focus:border-moss-600 focus:ring-1 focus:ring-moss-600 transition-colors";
 const errCls = "mt-1.5 text-xs text-red-700";
 const req = <span className="ml-1 align-middle text-xs text-red-700">必須</span>;
 const opt = <span className="ml-1 align-middle text-xs text-ink-400">任意</span>;
@@ -58,7 +59,7 @@ export default function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="border border-paper-300 bg-paper-50 p-8 text-center md:p-12">
+      <div role="status" className="border border-paper-300 bg-paper-50 p-8 text-center md:p-12">
         <CheckCircle2 className="mx-auto h-14 w-14 text-wakaba-500" strokeWidth={1.25} aria-hidden />
         <h3 className="mt-5 font-heading text-xl text-moss-700">
           お問い合わせを受け付けました
@@ -131,8 +132,17 @@ export default function ContactForm() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelCls}>お名前{req}</label>
-          <input id="name" type="text" className={inputCls} placeholder="例）山田 太郎" autoComplete="name" {...register("name")} />
-          {errors.name && <p className={errCls}>{errors.name.message}</p>}
+          <input
+            id="name"
+            type="text"
+            className={inputCls}
+            placeholder="例）山田 太郎"
+            autoComplete="name"
+            aria-invalid={errors.name ? true : undefined}
+            aria-describedby={errors.name ? "name-error" : undefined}
+            {...register("name")}
+          />
+          {errors.name && <p id="name-error" className={errCls}>{errors.name.message}</p>}
         </div>
         <div>
           <label htmlFor="kana" className={labelCls}>ふりがな{opt}</label>
@@ -145,15 +155,33 @@ export default function ContactForm() {
           <label htmlFor="phone" className={labelCls}>
             電話番号<span className="ml-1 align-middle text-xs text-ink-400">（電話 / メールいずれか必須）</span>
           </label>
-          <input id="phone" type="tel" className={inputCls} placeholder="例）090-3855-4560" autoComplete="tel" {...register("phone")} />
-          {errors.phone && <p className={errCls}>{errors.phone.message}</p>}
+          <input
+            id="phone"
+            type="tel"
+            className={inputCls}
+            placeholder="例）090-3855-4560"
+            autoComplete="tel"
+            aria-invalid={errors.phone ? true : undefined}
+            aria-describedby={errors.phone ? "phone-error" : undefined}
+            {...register("phone")}
+          />
+          {errors.phone && <p id="phone-error" className={errCls}>{errors.phone.message}</p>}
         </div>
         <div>
           <label htmlFor="email" className={labelCls}>
             メールアドレス<span className="ml-1 align-middle text-xs text-ink-400">（電話 / メールいずれか必須）</span>
           </label>
-          <input id="email" type="email" className={inputCls} placeholder="例）info@example.com" autoComplete="email" {...register("email")} />
-          {errors.email && <p className={errCls}>{errors.email.message}</p>}
+          <input
+            id="email"
+            type="email"
+            className={inputCls}
+            placeholder="例）info@example.com"
+            autoComplete="email"
+            aria-invalid={errors.email ? true : undefined}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            {...register("email")}
+          />
+          {errors.email && <p id="email-error" className={errCls}>{errors.email.message}</p>}
         </div>
       </div>
 
@@ -163,14 +191,18 @@ export default function ContactForm() {
           {CONTACT_METHODS.map((m) => (
             <label
               key={m}
-              className="flex cursor-pointer items-center justify-center gap-2 border border-paper-400 bg-paper-50 px-3 py-2.5 text-sm text-ink-700 transition-colors hover:border-moss-500 has-[:checked]:border-moss-700 has-[:checked]:bg-moss-700 has-[:checked]:text-paper-50"
+              className="flex cursor-pointer items-center justify-center gap-2 border border-paper-400 bg-paper-50 px-3 py-2.5 text-sm text-ink-700 transition-colors hover:border-moss-500 has-[:checked]:border-moss-700 has-[:checked]:bg-moss-700 has-[:checked]:text-paper-50 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-moss-600"
             >
               <input type="radio" value={m} className="sr-only" {...register("contactMethod")} />
               {m}
             </label>
           ))}
         </div>
-        {errors.contactMethod && <p className={errCls}>{errors.contactMethod.message}</p>}
+        {errors.contactMethod && (
+          <p id="contactMethod-error" className={errCls} role="alert">
+            {errors.contactMethod.message}
+          </p>
+        )}
       </fieldset>
 
       <div>
@@ -221,9 +253,11 @@ export default function ContactForm() {
           rows={6}
           className={inputCls}
           placeholder="ご希望の作業、お墓の状況、ご不安な点などをご記入ください。分かる範囲で構いません。"
+          aria-invalid={errors.message ? true : undefined}
+          aria-describedby={errors.message ? "message-error" : undefined}
           {...register("message")}
         />
-        {errors.message && <p className={errCls}>{errors.message.message}</p>}
+        {errors.message && <p id="message-error" className={errCls}>{errors.message.message}</p>}
       </div>
 
       {/* 写真添付を想定したUI（現状は送信対象外。実装時にストレージ連携を追加） */}
@@ -245,7 +279,13 @@ export default function ContactForm() {
 
       <div className="border-t border-paper-300 pt-6">
         <label className="flex cursor-pointer items-start gap-3 text-sm text-ink-700">
-          <input type="checkbox" className="mt-1 h-4 w-4 accent-moss-700" {...register("privacy")} />
+          <input
+            type="checkbox"
+            className="mt-1 h-4 w-4 accent-moss-700"
+            aria-invalid={errors.privacy ? true : undefined}
+            aria-describedby={errors.privacy ? "privacy-error" : undefined}
+            {...register("privacy")}
+          />
           <span>
             <a href="/privacy" target="_blank" className="text-moss-600 underline underline-offset-2">
               プライバシーポリシー
@@ -253,11 +293,11 @@ export default function ContactForm() {
             に同意します{req}
           </span>
         </label>
-        {errors.privacy && <p className={errCls}>{errors.privacy.message}</p>}
+        {errors.privacy && <p id="privacy-error" className={errCls} role="alert">{errors.privacy.message}</p>}
       </div>
 
       {status === "error" && (
-        <p className="border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p role="alert" className="border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
           送信に失敗しました。時間をおいて再度お試しいただくか、お電話（{siteConfig.phone}）にてご連絡ください。
         </p>
       )}

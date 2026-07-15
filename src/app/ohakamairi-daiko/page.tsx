@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import ServiceDetail from "@/components/sections/ServiceDetail";
-import { getService } from "@/data/services";
+import { requireService } from "@/data/services";
 import { pageMeta, serviceSchema } from "@/lib/seo";
 
-const service = getService("ohakamairi-daiko")!;
+const service = requireService("ohakamairi-daiko");
 
 export const metadata: Metadata = pageMeta({
   title: "千葉のお墓参り代行",

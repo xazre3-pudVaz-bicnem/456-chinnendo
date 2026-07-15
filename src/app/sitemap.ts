@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/data/site";
-import { getColumnSlugs } from "@/lib/columns";
-import { areaPages } from "@/data/areas";
+import { getColumnList } from "@/lib/columns";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths = [
@@ -19,21 +18,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/sitemap", priority: 0.3, changeFrequency: "yearly" as const },
   ];
 
-  const columns = getColumnSlugs().map((slug) => ({
-    path: `/column/${slug}`,
-    priority: 0.6,
-    changeFrequency: "monthly" as const,
-  }));
-
-  const areas = areaPages.map((a) => ({
-    path: `/area/${a.slug}`,
-    priority: 0.6,
-    changeFrequency: "monthly" as const,
-  }));
-
-  return [...staticPaths, ...columns, ...areas].map((e) => ({
+  const entries: MetadataRoute.Sitemap = staticPaths.map((e) => ({
     url: `${SITE_URL}${e.path}`,
     changeFrequency: e.changeFrequency,
     priority: e.priority,
   }));
+
+  // コラム：実在する .md ファイルから生成（frontmatter の date を lastModified に）
+  for (const c of getColumnList()) {
+    entries.push({
+      url: `${SITE_URL}/column/${c.slug}`,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      ...(c.date ? { lastModified: new Date(c.date) } : {}),
+    });
+  }
+
+  // 注意：エリア個別ページ（/area/[slug]）は、ルート（src/app/area/[slug]/page.tsx）を
+  // 実装してからこの sitemap に追加すること。ルートなしで追加すると404をサイトマップに載せてしまう。
+
+  return entries;
 }

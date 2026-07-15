@@ -30,7 +30,10 @@ export default function Breadcrumb({ items }: { items: Crumb[] }) {
           return (
             <li key={i} className="flex items-center gap-2">
               {c.href && !last ? (
-                <Link href={c.href} className="transition-colors hover:text-moss-600">
+                <Link
+                  href={c.href}
+                  className="-my-1.5 inline-block py-1.5 transition-colors hover:text-moss-600"
+                >
                   {c.label}
                 </Link>
               ) : (

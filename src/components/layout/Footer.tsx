@@ -4,7 +4,7 @@ import { Phone, Instagram } from "lucide-react";
 import { siteConfig, FOOTER_LINKS } from "@/data/site";
 
 export default function Footer() {
-  const year = 2026; // 要確認：年号は運用時に自動化してもよい（現状は固定でCLS/差分を防止）
+  const year = new Date().getFullYear(); // ビルド時に確定（静的生成のためハイドレーション差分なし）
   return (
     <footer className="bg-moss-900 text-paper-200">
       <div className="mx-auto max-w-7xl px-5 py-14 lg:px-8 lg:py-16">

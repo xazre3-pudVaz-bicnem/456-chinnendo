@@ -25,7 +25,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
     >
       <summary className="flex cursor-pointer list-none items-start justify-between gap-4 py-5 [&::-webkit-details-marker]:hidden">
         <span className="flex gap-3 text-[15px] font-medium leading-relaxed text-moss-700 md:text-base">
-          <span className="font-en shrink-0 text-gold-500" aria-hidden>
+          <span className="font-en shrink-0 text-gold-600" aria-hidden>
             Q.
           </span>
           {q}

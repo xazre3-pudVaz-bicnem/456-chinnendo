@@ -58,7 +58,7 @@ export default function ColumnListPage() {
                     className="border border-paper-300 bg-paper-100 px-3.5 py-2 text-sm text-ink-500"
                   >
                     {p.title}
-                    <span className="ml-2 text-xs text-gold-500">準備中</span>
+                    <span className="ml-2 text-xs text-gold-600">準備中</span>
                   </li>
                 ))}
               </ul>

@@ -33,7 +33,6 @@ import {
 import { faqs, topFaqSlugs } from "@/data/faq";
 import { siteConfig } from "@/data/site";
 import { getColumnList } from "@/lib/columns";
-import { faqSchema } from "@/lib/seo";
 
 const reasonIcons = [Sprout, Camera, HeartHandshake, MapPinned, ShieldCheck];
 
@@ -45,10 +44,7 @@ export default function HomePage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(topFaqs)) }}
-      />
+      {/* FAQPage構造化データは /faq のみに掲載（重複マークアップ回避） */}
 
       {/* ============ 02 ヒーロー ============ */}
       <section className="relative flex min-h-[88svh] items-center overflow-hidden">

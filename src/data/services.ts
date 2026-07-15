@@ -122,3 +122,12 @@ export const services: Service[] = [
 export function getService(slug: string): Service | undefined {
   return services.find((s) => s.slug === slug);
 }
+
+/** ビルド時に存在を保証して取得（slug変更ミスを明確なエラーで検出） */
+export function requireService(slug: string): Service {
+  const service = getService(slug);
+  if (!service) {
+    throw new Error(`services.ts に slug "${slug}" のサービスが見つかりません`);
+  }
+  return service;
+}

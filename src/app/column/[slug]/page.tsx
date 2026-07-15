@@ -52,8 +52,8 @@ export default async function ColumnDetailPage({
         }}
       />
 
-      {/* ヘッダー余白確保のためのスペーサー */}
-      <div className="bg-moss-800 pt-20" aria-hidden />
+      {/* 固定ヘッダーの高さ分のスペーサー（ヘッダーと同系色で自然につなぐ） */}
+      <div className="h-16 bg-paper-50 lg:h-[4.5rem]" aria-hidden />
       <Breadcrumb
         items={[
           { label: "お知らせ・コラム", href: "/column" },

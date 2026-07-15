@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Noto_Sans_JP, Noto_Serif_JP, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
@@ -32,6 +32,13 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
+/** viewport-fit=cover で iPhone の safe-area-inset を有効化（下部固定ナビ用） */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -59,6 +66,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ja_JP",
+    url: SITE_URL,
     siteName: siteConfig.name,
     images: [{ url: "/images/og-image.jpg", width: 1200, height: 630 }],
   },
@@ -78,7 +86,13 @@ export default function RootLayout({
       lang="ja"
       className={`${notoSans.variable} ${notoSerif.variable} ${cormorant.variable}`}
     >
-      <body className="flex min-h-screen flex-col bg-paper-100 text-ink-700 antialiased">
+      <body className="flex min-h-screen flex-col bg-paper-100 pb-16 text-ink-700 antialiased lg:pb-0">
+        {/* JS有効時のみ .reveal の非表示スタイルを適用（JS無効でも全文表示） */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
@@ -98,7 +112,7 @@ export default function RootLayout({
           本文へスキップ
         </a>
         <Header />
-        <main id="main" className="flex-1 pb-16 lg:pb-0">
+        <main id="main" className="flex-1 scroll-mt-16 lg:scroll-mt-[4.5rem]">
           {children}
         </main>
         <Footer />

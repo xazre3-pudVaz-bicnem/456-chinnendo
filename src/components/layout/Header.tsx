@@ -77,10 +77,18 @@ export default function Header() {
               className="relative"
               onMouseEnter={() => "children" in item && setOpenDropdown(item.label)}
               onMouseLeave={() => setOpenDropdown(null)}
+              onFocus={() => "children" in item && setOpenDropdown(item.label)}
+              onBlur={(e) => {
+                // フォーカスがドロップダウン外へ移動したら閉じる（キーボード操作対応）
+                if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                  setOpenDropdown(null);
+                }
+              }}
             >
               <Link
                 href={item.href}
                 aria-current={isActive(item.href) ? "page" : undefined}
+                aria-expanded={"children" in item ? openDropdown === item.label : undefined}
                 className={`flex items-center gap-1 whitespace-nowrap py-2 tracking-wide transition-colors ${
                   isActive(item.href)
                     ? "text-moss-700"

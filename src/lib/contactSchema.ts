@@ -57,9 +57,11 @@ export const contactSchema = z
       .trim()
       .min(5, { message: "お問い合わせ内容をご入力ください" })
       .max(2000, { message: "お問い合わせ内容が長すぎます" }),
-    privacy: z.literal(true, {
-      message: "プライバシーポリシーへの同意が必要です",
-    }),
+    privacy: z
+      .boolean()
+      .refine((v) => v === true, {
+        message: "プライバシーポリシーへの同意が必要です",
+      }),
     /** スパム対策のハニーポット（人間は空のまま） */
     company_website: z.string().max(0).optional().or(z.literal("")),
   })

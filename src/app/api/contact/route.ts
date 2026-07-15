@@ -18,6 +18,10 @@ const MAX_PER_WINDOW = 5;
 
 function rateLimited(ip: string): boolean {
   const now = Date.now();
+  // 期限切れエントリを掃除（メモリの無限増加を防止）
+  for (const [key, rec] of hits) {
+    if (now - rec.ts > WINDOW_MS) hits.delete(key);
+  }
   const rec = hits.get(ip);
   if (!rec || now - rec.ts > WINDOW_MS) {
     hits.set(ip, { count: 1, ts: now });
@@ -29,10 +33,23 @@ function rateLimited(ip: string): boolean {
 
 // 制御文字（U+0000〜U+001F, U+007F）を除去する正規表現（ソースに制御文字を直書きしない）
 const CONTROL_CHARS = new RegExp("[\\u0000-\\u001F\\u007F]", "g");
+// 改行（LF）だけは残す版（本文用）
+const CONTROL_CHARS_KEEP_LF = new RegExp(
+  "[\\u0000-\\u0009\\u000B-\\u001F\\u007F]",
+  "g",
+);
 
 /** 入力値の簡易サニタイズ（制御文字除去・トリム） */
 function clean(v: unknown): string {
   return String(v ?? "").replace(CONTROL_CHARS, "").trim();
+}
+
+/** 本文用サニタイズ（改行は保持し、その他の制御文字を除去） */
+function cleanKeepNewline(v: unknown): string {
+  return String(v ?? "")
+    .replace(/\r\n?/g, "\n")
+    .replace(CONTROL_CHARS_KEEP_LF, "")
+    .trim();
 }
 
 export async function POST(req: Request) {
@@ -49,10 +66,19 @@ export async function POST(req: Request) {
       );
     }
 
-    const raw = await req.json();
+    let raw: unknown;
+    try {
+      raw = await req.json();
+    } catch {
+      return NextResponse.json(
+        { ok: false, reason: "invalid_json" },
+        { status: 400 },
+      );
+    }
 
     // ハニーポット：値が入っていればボットとみなし、成功を装って無視
-    if (clean(raw.company_website)) {
+    const rawObj = (raw ?? {}) as Record<string, unknown>;
+    if (clean(rawObj.company_website)) {
       return NextResponse.json({ ok: true });
     }
 
@@ -63,7 +89,24 @@ export async function POST(req: Request) {
         { status: 400 },
       );
     }
-    const d = parsed.data;
+    // 全テキストフィールドから制御文字（改行含む）を除去
+    // （メール件名・本文へのヘッダ注入対策。message のみ改行を保持）
+    const p = parsed.data;
+    const d = {
+      ...p,
+      name: clean(p.name),
+      kana: clean(p.kana),
+      phone: clean(p.phone),
+      email: clean(p.email),
+      service: p.service,
+      cemeteryName: clean(p.cemeteryName),
+      cemeteryAddress: clean(p.cemeteryAddress),
+      section: clean(p.section),
+      preferredTime: clean(p.preferredTime),
+      graveCount: clean(p.graveCount),
+      graveCondition: clean(p.graveCondition),
+      message: cleanKeepNewline(p.message),
+    };
 
     const toEmail = process.env.CONTACT_TO_EMAIL;
     const apiKey = process.env.RESEND_API_KEY;

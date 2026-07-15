@@ -60,7 +60,10 @@ export function serviceSchema(args: {
     areaServed: { "@type": "AdministrativeArea", name: siteConfig.areaRegion },
     availableChannel: {
       "@type": "ServiceChannel",
-      servicePhone: siteConfig.phoneIntl,
+      servicePhone: {
+        "@type": "ContactPoint",
+        telephone: siteConfig.phoneIntl,
+      },
       serviceUrl: `${SITE_URL}/contact`,
     },
   };
@@ -125,7 +128,7 @@ export const organizationSchema = {
   "@id": `${SITE_URL}/#organization`,
   name: siteConfig.name,
   url: SITE_URL,
-  logo: `${SITE_URL}/images/og-image.jpg`,
+  logo: `${SITE_URL}/images/logo.png`,
   telephone: siteConfig.phoneIntl,
   sameAs: [siteConfig.instagram],
 };

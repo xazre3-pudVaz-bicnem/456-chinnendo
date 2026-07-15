@@ -60,8 +60,10 @@ export default function ImagePlaceholder({
         />
       ) : (
         <div
-          role="img"
-          aria-label={alt}
+          // 装飾画像（alt=""）のフォールバックは支援技術から隠す
+          role={alt ? "img" : undefined}
+          aria-label={alt || undefined}
+          aria-hidden={alt ? undefined : true}
           className={`absolute inset-0 flex flex-col items-center justify-center gap-3 ${
             tone === "dark"
               ? "bg-moss-800 bg-grid-soft"

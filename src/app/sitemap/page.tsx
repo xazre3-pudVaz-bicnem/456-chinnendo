@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
 import { NAV_ITEMS, FOOTER_LINKS } from "@/data/site";
-import { plannedColumns } from "@/data/columns";
+import { getColumnList } from "@/lib/columns";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
@@ -27,7 +27,8 @@ const mainPages = [
 ];
 
 export default function SitemapPage() {
-  const publishedColumns = plannedColumns.filter((c) => c.published);
+  // 実在する記事ファイルから一覧を生成（存在しないスラッグへのリンクを防止）
+  const publishedColumns = getColumnList();
 
   return (
     <>
