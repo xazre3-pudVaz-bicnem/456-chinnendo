@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { Phone, Instagram, Menu, X, ChevronDown } from "lucide-react";
@@ -48,19 +49,24 @@ export default function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-5 lg:h-[4.5rem] lg:px-8">
         {/* Logo / 屋号 */}
         <Link href="/" className="group flex shrink-0 items-center gap-2.5" aria-label={`${siteConfig.name} トップへ`}>
-          {siteConfig.hasLogo ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src="/images/logo.png" alt={`${siteConfig.name} ロゴ`} className="h-9 w-auto lg:h-10" />
-          ) : (
-            <span className="flex flex-col leading-none">
-              <span className="font-heading text-lg tracking-wide text-moss-700 transition-colors group-hover:text-moss-600 lg:text-xl">
-                {siteConfig.name}
-              </span>
-              <span className="mt-1 font-en text-[10px] tracking-[0.22em] text-ink-400">
-                CHIBA GRAVE VISIT &amp; CLEANING
-              </span>
-            </span>
+          {siteConfig.hasLogo && (
+            <Image
+              src="/images/logo-mark.png"
+              alt=""
+              width={44}
+              height={44}
+              priority
+              className="h-10 w-10 rounded-full border border-paper-300 object-cover lg:h-11 lg:w-11"
+            />
           )}
+          <span className="flex flex-col leading-none">
+            <span className="font-heading text-lg tracking-wide text-moss-700 transition-colors group-hover:text-moss-600 lg:text-xl">
+              {siteConfig.name}
+            </span>
+            <span className="mt-1 font-en text-[10px] tracking-[0.22em] text-ink-400">
+              CHIBA GRAVE VISIT &amp; CLEANING
+            </span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}

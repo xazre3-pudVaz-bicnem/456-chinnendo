@@ -65,10 +65,7 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
   alternates: { canonical: SITE_URL },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
+  // ファビコンは file-based（src/app/icon.png / apple-icon.png）で自動設定
 };
 
 export default function RootLayout({

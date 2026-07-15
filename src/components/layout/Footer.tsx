@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Phone, Instagram } from "lucide-react";
 import { siteConfig, FOOTER_LINKS } from "@/data/site";
 
@@ -10,12 +11,18 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* ブランド */}
           <div className="lg:col-span-1">
-            {siteConfig.hasLogo ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src="/images/logo.png" alt={`${siteConfig.name} ロゴ`} className="h-10 w-auto brightness-0 invert" />
-            ) : (
+            <div className="flex items-center gap-3">
+              {siteConfig.hasLogo && (
+                <Image
+                  src="/images/logo-mark.png"
+                  alt=""
+                  width={48}
+                  height={48}
+                  className="h-12 w-12 rounded-full object-cover"
+                />
+              )}
               <p className="font-heading text-xl text-paper-50">{siteConfig.name}</p>
-            )}
+            </div>
             <p className="mt-4 text-sm leading-loose text-paper-200/80">
               {siteConfig.area}のお墓参り代行・お墓掃除代行。
               <br />
