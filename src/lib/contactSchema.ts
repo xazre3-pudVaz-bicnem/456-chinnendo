@@ -62,8 +62,6 @@ export const contactSchema = z
       .refine((v) => v === true, {
         message: "プライバシーポリシーへの同意が必要です",
       }),
-    /** スパム対策のハニーポット（人間は空のまま） */
-    company_website: z.string().max(0).optional().or(z.literal("")),
   })
   .refine((d) => !!(d.phone && d.phone.length) || !!(d.email && d.email.length), {
     message: "電話番号またはメールアドレスのいずれかをご入力ください",

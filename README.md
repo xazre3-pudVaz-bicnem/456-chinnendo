@@ -40,33 +40,28 @@ npm start       # 本番サーバー
 ### 画像の管理用ラベルを消す（本番公開時）
 `src/data/site.ts` の `showImagePlaceholderLabels` を `false` に。
 
-## お問い合わせフォームを有効化する
+## お問い合わせフォームの仕組み（設定不要）
 
-初期状態ではメール送信先が未設定のため、送信すると「準備中」メッセージ（電話・Instagram誘導）が表示されます。
-有効化するには、環境変数（`.env.local` または Vercel の環境変数）を設定します。
+フォームは **mailto 方式**です。訪問者が「メールを作成する」を押すと、
+入力内容（お名前・連絡先・墓地情報・相談内容）を宛先 `chinnen.456@au.com`・
+件名・本文に自動セットしたメールソフトが起動し、訪問者自身が送信します。
+サーバーやAPIキーの設定は一切不要です。
 
-```
-RESEND_API_KEY=re_xxxxxxxx        # Resend（https://resend.com）のAPIキー
-CONTACT_TO_EMAIL=owner@example.com # 受信先メールアドレス
-CONTACT_FROM_EMAIL=info@あなたのドメイン  # Resendで認証済みの送信元（任意）
-```
-
-設定後は、フォーム送信時に Resend 経由でメールが届きます。
+- 宛先の変更：`src/data/site.ts` の `email` を書き換えるだけ
+- メールソフトが起動しない環境向けに「宛先と本文をコピー」ボタンを用意
+- 写真はメール起動後に添付してもらう案内を表示
 
 ## Vercel へのデプロイ
 
 1. GitHub 等にプッシュし、Vercel でインポート。
 2. 環境変数を設定：
    - `NEXT_PUBLIC_SITE_URL`（本番ドメイン。例：`https://456chinnendo.jp`）
-   - `RESEND_API_KEY`（フォーム有効化時）
-   - `CONTACT_TO_EMAIL`（フォーム有効化時）
-   - `CONTACT_FROM_EMAIL`（任意）
 3. デプロイ。
 
 ## 確定済みの事業情報（2026-07-16 更新）
 
 - 料金：基本プラン **¥19,800**（墓石1基・税込表示・お花代/お線香代込み）／定期コース（2回）**¥35,000**（¥4,600お得）… Instagram料金表スクショに準拠。`src/data/site.ts` の `mainPrice` / `regularPrice` で変更可。
-- 問い合わせメールアドレス：`chinnen.456@au.com`（`site.ts` の `email`。フォーム送信先は env `CONTACT_TO_EMAIL` が優先）
+- 問い合わせメールアドレス：`chinnen.456@au.com`（`site.ts` の `email`。フォームの宛先に使用）
 
 ## 未確定（要確認）の事業情報
 

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, Phone, Instagram } from "lucide-react";
+import { Mail, Copy, Check, Phone, Instagram } from "lucide-react";
 import {
   contactSchema,
   type ContactInput,
@@ -12,7 +12,11 @@ import {
 } from "@/lib/contactSchema";
 import { siteConfig } from "@/data/site";
 
-type Status = "idle" | "sending" | "success" | "not_configured" | "error";
+/**
+ * お問い合わせフォーム（mailto方式・サーバー設定不要）。
+ * 入力内容を検証したうえで、宛先・件名・本文を自動セットした
+ * メールソフトを起動します。起動しない環境向けに本文コピーも用意。
+ */
 
 const labelCls = "block text-sm font-medium text-moss-700 mb-2";
 // text-base(16px)：iOS Safariのフォーカス時自動ズームを防ぐ
@@ -22,83 +26,125 @@ const errCls = "mt-1.5 text-xs text-red-700";
 const req = <span className="ml-1 align-middle text-xs text-red-700">必須</span>;
 const opt = <span className="ml-1 align-middle text-xs text-ink-400">任意</span>;
 
+/** 入力内容からメール件名・本文を組み立てる */
+function buildMail(d: ContactInput): { subject: string; body: string } {
+  const subject = `【お問い合わせ】${d.name}より（456ちんねん堂ホームページ）`;
+  const body = [
+    "456ちんねん堂 ご担当者様",
+    "",
+    "ホームページのお問い合わせフォームより連絡いたします。",
+    "",
+    `お名前：${d.name}`,
+    d.kana ? `ふりがな：${d.kana}` : "",
+    `電話番号：${d.phone || "（未入力）"}`,
+    `メールアドレス：${d.email || "（未入力）"}`,
+    `希望する連絡方法：${d.contactMethod}`,
+    d.service ? `希望サービス：${d.service}` : "",
+    d.cemeteryName ? `墓地・霊園名：${d.cemeteryName}` : "",
+    d.cemeteryAddress ? `墓地の所在地：${d.cemeteryAddress}` : "",
+    d.section ? `区画番号：${d.section}` : "",
+    d.graveCount ? `墓石の数：${d.graveCount}` : "",
+    d.preferredTime ? `希望時期：${d.preferredTime}` : "",
+    d.graveCondition ? `お墓の状態：${d.graveCondition}` : "",
+    "",
+    "【お問い合わせ内容】",
+    d.message,
+  ]
+    .filter((line) => line !== "")
+    .join("\r\n");
+  return { subject, body };
+}
+
 export default function ContactForm() {
-  const [status, setStatus] = useState<Status>("idle");
+  const [opened, setOpened] = useState<{ subject: string; body: string } | null>(null);
+  const [copied, setCopied] = useState(false);
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
     mode: "onBlur",
   });
 
-  async function onSubmit(values: ContactInput) {
-    if (status === "sending") return;
-    setStatus("sending");
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.ok && data.ok) {
-        setStatus("success");
-        reset();
-      } else if (data.reason === "not_configured") {
-        setStatus("not_configured");
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
-    }
-  }
-
-  if (status === "success") {
-    return (
-      <div role="status" className="border border-paper-300 bg-paper-50 p-8 text-center md:p-12">
-        <CheckCircle2 className="mx-auto h-14 w-14 text-wakaba-500" strokeWidth={1.25} aria-hidden />
-        <h3 className="mt-5 font-heading text-xl text-moss-700">
-          お問い合わせを受け付けました
-        </h3>
-        <p className="mt-4 text-[15px] leading-loose text-ink-600">
-          この度はお問い合わせいただきありがとうございます。
-          <br />
-          内容を確認のうえ、折り返しご連絡いたします。
-        </p>
-        <p className="mt-4 text-sm leading-relaxed text-ink-500">{siteConfig.phoneNote}</p>
-        <button
-          type="button"
-          onClick={() => setStatus("idle")}
-          className="mt-8 inline-block border border-moss-600 px-6 py-2.5 text-sm tracking-wide text-moss-700 transition-colors hover:bg-moss-700 hover:text-paper-50"
-        >
-          続けて入力する
-        </button>
-      </div>
+  function onSubmit(values: ContactInput) {
+    const mail = buildMail(values);
+    setOpened(mail);
+    setCopied(false);
+    // メールソフトを起動（宛先・件名・本文を自動セット）
+    window.location.assign(
+      `mailto:${siteConfig.email}?subject=${encodeURIComponent(
+        mail.subject,
+      )}&body=${encodeURIComponent(mail.body)}`,
     );
   }
 
-  if (status === "not_configured") {
+  async function copyMail() {
+    if (!opened) return;
+    try {
+      await navigator.clipboard.writeText(
+        `宛先：${siteConfig.email}\r\n件名：${opened.subject}\r\n\r\n${opened.body}`,
+      );
+      setCopied(true);
+    } catch {
+      // クリップボード非対応環境では何もしない（本文は画面に表示済み）
+    }
+  }
+
+  if (opened) {
     return (
-      <div className="border border-gold-400 bg-paper-50 p-8 text-center md:p-12">
-        <h3 className="font-heading text-xl text-moss-700">
-          現在フォームは準備中です
+      <div role="status" className="border border-paper-300 bg-paper-50 p-8 md:p-12">
+        <Mail className="mx-auto h-14 w-14 text-wakaba-500" strokeWidth={1.25} aria-hidden />
+        <h3 className="mt-5 text-center font-heading text-xl text-moss-700">
+          メールソフトを起動しました
         </h3>
-        <p className="mt-4 text-[15px] leading-loose text-ink-600">
-          恐れ入りますが、ただいまお問い合わせフォームの送信機能を準備中です。
+        <p className="mt-4 text-center text-[15px] leading-loose text-ink-600">
+          入力内容をセットしたメール画面が開きます。
           <br className="hidden md:block" />
-          お手数ですが、お電話またはInstagramからお問い合わせください。
+          内容をご確認のうえ、<strong className="text-moss-700">送信ボタンを押して完了</strong>してください。
+          お墓の写真がある場合は、メールにそのまま添付いただけます。
         </p>
-        <div className="mx-auto mt-7 flex max-w-sm flex-col gap-3">
+
+        <div className="mx-auto mt-8 max-w-lg border border-paper-300 bg-paper-100 p-5">
+          <p className="text-sm font-medium text-moss-700">
+            メール画面が開かない場合
+          </p>
+          <p className="mt-2 text-sm leading-loose text-ink-600">
+            下のボタンで内容をコピーし、お使いのメール（Gmailなど）に貼り付けて
+            <a
+              href={`mailto:${siteConfig.email}`}
+              className="mx-1 text-moss-600 underline underline-offset-2"
+            >
+              {siteConfig.email}
+            </a>
+            までお送りください。
+          </p>
+          <button
+            type="button"
+            onClick={copyMail}
+            className="mt-4 inline-flex items-center gap-2 border border-moss-600 px-5 py-2.5 text-sm tracking-wide text-moss-700 transition-colors hover:bg-moss-700 hover:text-paper-50"
+          >
+            {copied ? (
+              <>
+                <Check className="h-4 w-4" strokeWidth={2} aria-hidden />
+                コピーしました
+              </>
+            ) : (
+              <>
+                <Copy className="h-4 w-4" strokeWidth={1.75} aria-hidden />
+                宛先と本文をコピー
+              </>
+            )}
+          </button>
+        </div>
+
+        <div className="mx-auto mt-8 flex max-w-sm flex-col gap-3">
           <a
             href={siteConfig.phoneTel}
             className="flex items-center justify-center gap-2 bg-moss-700 px-6 py-3.5 text-paper-50"
           >
             <Phone className="h-4 w-4" strokeWidth={1.75} aria-hidden />
-            電話する（{siteConfig.phone}）
+            電話で相談する（{siteConfig.phone}）
           </a>
           <a
             href={siteConfig.instagram}
@@ -110,25 +156,23 @@ export default function ContactForm() {
             Instagram でお問い合わせ
           </a>
         </div>
-        <p className="mt-5 text-xs leading-relaxed text-ink-500">{siteConfig.phoneNote}</p>
+        <p className="mt-5 text-center text-xs leading-relaxed text-ink-500">{siteConfig.phoneNote}</p>
+
+        <div className="mt-8 text-center">
+          <button
+            type="button"
+            onClick={() => setOpened(null)}
+            className="text-sm text-ink-500 underline underline-offset-2 transition-colors hover:text-moss-600"
+          >
+            入力画面に戻る
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
-      {/* ハニーポット（視覚的・支援技術的に非表示） */}
-      <div className="absolute left-[-9999px] top-[-9999px]" aria-hidden>
-        <label htmlFor="company_website">Webサイト（入力しないでください）</label>
-        <input
-          id="company_website"
-          type="text"
-          tabIndex={-1}
-          autoComplete="off"
-          {...register("company_website")}
-        />
-      </div>
-
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelCls}>お名前{req}</label>
@@ -260,20 +304,11 @@ export default function ContactForm() {
         {errors.message && <p id="message-error" className={errCls}>{errors.message.message}</p>}
       </div>
 
-      {/* 写真添付を想定したUI（現状は送信対象外。実装時にストレージ連携を追加） */}
-      <div>
-        <label htmlFor="photo" className={labelCls}>
-          写真の添付{opt}<span className="ml-2 text-xs text-ink-400">※ 現在は準備中です</span>
-        </label>
-        <input
-          id="photo"
-          type="file"
-          accept="image/*"
-          disabled
-          className="w-full cursor-not-allowed border border-dashed border-paper-400 bg-paper-100 px-4 py-3 text-sm text-ink-400"
-        />
-        <p className="mt-1.5 text-xs text-ink-400">
-          お墓の写真がある場合は、お手数ですがInstagramのメッセージからお送りください。
+      {/* 写真はメールソフト起動後に添付してもらう方式 */}
+      <div className="border border-dashed border-paper-400 bg-paper-100 px-4 py-3">
+        <p className="text-sm text-ink-600">
+          <span className="font-medium text-moss-700">お墓の写真がある場合：</span>
+          送信ボタンを押すとメール画面が開きますので、そちらに写真を添付してお送りください。
         </p>
       </div>
 
@@ -296,21 +331,16 @@ export default function ContactForm() {
         {errors.privacy && <p id="privacy-error" className={errCls} role="alert">{errors.privacy.message}</p>}
       </div>
 
-      {status === "error" && (
-        <p role="alert" className="border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
-          送信に失敗しました。時間をおいて再度お試しいただくか、お電話（{siteConfig.phone}）にてご連絡ください。
-        </p>
-      )}
-
       <div className="pt-2">
         <button
           type="submit"
-          disabled={status === "sending"}
-          className="inline-flex w-full items-center justify-center bg-moss-700 px-12 py-4 text-sm tracking-widest text-paper-50 transition-colors hover:bg-moss-600 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          className="inline-flex w-full items-center justify-center gap-2 bg-moss-700 px-12 py-4 text-sm tracking-widest text-paper-50 transition-colors hover:bg-moss-600 sm:w-auto"
         >
-          {status === "sending" ? "送信中…" : "この内容で送信する"}
+          <Mail className="h-4 w-4" strokeWidth={1.75} aria-hidden />
+          メールを作成する
         </button>
         <p className="mt-4 text-xs leading-relaxed text-ink-500">
+          ボタンを押すと、入力内容をセットしたメールソフトが起動します（宛先：{siteConfig.email}）。
           いただいた内容は、お問い合わせ対応の目的にのみ使用します。{siteConfig.phoneNote}
         </p>
       </div>
