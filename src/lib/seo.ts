@@ -142,7 +142,7 @@ export function articleSchema(args: {
 
 /**
  * LocalBusiness / ProfessionalService 構造化データ（全ページ共通）
- * 住所・営業時間は未確定のため掲載しない（架空情報を入れない）。
+ * 事業者情報（住所・営業時間・代表者）はご本人確認済みの内容のみ掲載。
  */
 export const localBusinessSchema = {
   "@context": "https://schema.org",
@@ -151,17 +151,36 @@ export const localBusinessSchema = {
   name: siteConfig.name,
   url: SITE_URL,
   telephone: siteConfig.phoneIntl,
+  email: siteConfig.email,
   image: `${SITE_URL}/images/og-image.jpg`,
   description:
     "千葉県内でお墓参り代行・お墓掃除代行を行うサービス。遠方・ご多忙・ご高齢などでお墓へ行くことが難しい方に代わり、墓石の水洗いや雑草取り、墓地周辺の清掃を丁寧に行い、作業前後の写真でご報告します。",
   areaServed: { "@type": "AdministrativeArea", name: siteConfig.areaRegion },
   address: {
     "@type": "PostalAddress",
-    addressRegion: siteConfig.areaRegion,
+    ...(siteConfig.postalCode ? { postalCode: siteConfig.postalCode } : {}),
+    addressRegion: "千葉県",
+    addressLocality: "千葉市花見川区",
+    streetAddress: "三角町178-19",
     addressCountry: "JP",
-    // 要確認：住所が確定したら streetAddress / addressLocality / postalCode を追加
   },
-  sameAs: [siteConfig.instagram],
+  // 営業時間 12:00〜20:00（全日）
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
+    opens: "12:00",
+    closes: "20:00",
+  },
+  founder: { "@type": "Person", name: siteConfig.representative },
+  sameAs: [siteConfig.instagram, siteConfig.line],
   knowsAbout: [
     "お墓参り代行",
     "お墓掃除代行",

@@ -56,11 +56,11 @@ export const siteConfig = {
   regularTimes: 2,
   // 移動費・高速道路料金は千葉県内全域で基本料金に込み（距離による追加料金なし）
 
-  // ---- 以下は未確定。確認後に入力してください ----
-  address: "", // 要確認（Instagram掲載の住所は未検証のため空欄）
-  postalCode: "", // 要確認
-  businessHours: "", // 要確認（営業時間は勝手に作らない）
-  representative: "", // 要確認（代表者名）
+  // ---- 事業者情報（2026-07-16 ご本人確認済み）----
+  address: "千葉県千葉市花見川区三角町178-19",
+  postalCode: "", // 要確認（郵便番号）
+  businessHours: "12:00〜20:00",
+  representative: "逢坂 賢一",
   /** 問い合わせ受信先（フォームの送信先は環境変数 CONTACT_TO_EMAIL が優先） */
   email: "chinnen.456@au.com",
   established: "", // 要確認（創業年）

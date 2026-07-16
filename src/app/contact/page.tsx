@@ -74,7 +74,15 @@ export default function ContactPage() {
           <Reveal className="mt-6">
             <div className="flex items-start gap-3 border border-paper-300 bg-paper-100 p-5 text-sm leading-loose text-ink-600">
               <Clock className="mt-0.5 h-5 w-5 shrink-0 text-wakaba-500" strokeWidth={1.75} aria-hidden />
-              <p>{siteConfig.phoneNote}</p>
+              <p>
+                {siteConfig.businessHours && (
+                  <>
+                    受付時間：{siteConfig.businessHours}
+                    <br />
+                  </>
+                )}
+                {siteConfig.phoneNote}
+              </p>
             </div>
           </Reveal>
 
