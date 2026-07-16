@@ -8,8 +8,8 @@ import AreaList from "@/components/ui/AreaList";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import CTASection from "@/components/ui/CTASection";
 import { siteConfig } from "@/data/site";
-import { areaRegions, getAreaPage } from "@/data/areas";
-import { pageMeta } from "@/lib/seo";
+import { areaRegions, getAreaPage, areaPages } from "@/data/areas";
+import { pageMeta, collectionPageSchema } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
   title: "対応エリア（千葉県内全域）",
@@ -22,6 +22,23 @@ export const metadata: Metadata = pageMeta({
 export default function AreaPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            collectionPageSchema({
+              name: "対応エリア",
+              description:
+                "456ちんねん堂が対応する千葉県内の市区町村ページの一覧です。",
+              path: "/area",
+              items: areaPages.map((a) => ({
+                name: `${a.city}のお墓参り代行・お墓掃除代行`,
+                path: `/area/${a.slug}`,
+              })),
+            }),
+          ),
+        }}
+      />
       <PageHero
         en="Service Area"
         title="対応エリア"

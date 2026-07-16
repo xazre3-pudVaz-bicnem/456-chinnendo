@@ -4,8 +4,9 @@ import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
 import BlogCard from "@/components/ui/BlogCard";
 import CTASection from "@/components/ui/CTASection";
-import { getBlogList, getBlogCategoriesInUse } from "@/lib/blog";
-import { pageMeta } from "@/lib/seo";
+import Pagination from "@/components/ui/Pagination";
+import { getBlogPage, getBlogPageCount, getBlogCategoriesInUse } from "@/lib/blog";
+import { pageMeta, collectionPageSchema } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
   title: "ブログ",
@@ -16,11 +17,26 @@ export const metadata: Metadata = pageMeta({
 });
 
 export default function BlogListPage() {
-  const posts = getBlogList();
+  const posts = getBlogPage(1);
+  const totalPages = getBlogPageCount();
   const categories = getBlogCategoriesInUse();
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            collectionPageSchema({
+              name: "ブログ",
+              description:
+                "千葉県のお墓参り代行・お墓掃除代行に関する記事の一覧です。",
+              path: "/blog",
+              items: posts.map((p) => ({ name: p.title, path: `/blog/${p.slug}` })),
+            }),
+          ),
+        }}
+      />
       <PageHero
         en="Blog"
         title="ブログ"
@@ -58,6 +74,13 @@ export default function BlogListPage() {
           ) : (
             <p className="text-center text-ink-500">記事は準備中です。</p>
           )}
+
+          <Pagination
+            current={1}
+            total={totalPages}
+            basePath="/blog"
+            pageHref={(n) => `/blog/page/${n}`}
+          />
         </div>
       </section>
 

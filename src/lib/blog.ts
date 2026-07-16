@@ -77,11 +77,25 @@ function readAll(): BlogPost[] {
     });
 }
 
+/** 1ページあたりの記事数（毎日更新のため一覧が肥大化しないよう分割） */
+export const BLOG_PER_PAGE = 12;
+
 /** 記事メタ一覧（日付降順） */
 export function getBlogList(): BlogMeta[] {
   return readAll()
     .map(({ content: _content, ...meta }) => meta)
     .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+}
+
+/** 総ページ数 */
+export function getBlogPageCount(): number {
+  return Math.max(1, Math.ceil(getBlogList().length / BLOG_PER_PAGE));
+}
+
+/** ページ番号（1始まり）で記事を取得 */
+export function getBlogPage(page: number): BlogMeta[] {
+  const start = (page - 1) * BLOG_PER_PAGE;
+  return getBlogList().slice(start, start + BLOG_PER_PAGE);
 }
 
 /** 1記事（本文Markdown付き） */

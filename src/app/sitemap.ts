@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/data/site";
 import { areaPages } from "@/data/areas";
 import { getColumnList } from "@/lib/columns";
-import { getBlogList, getBlogCategoriesInUse } from "@/lib/blog";
+import { getBlogList, getBlogCategoriesInUse, getBlogPageCount } from "@/lib/blog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths = [
@@ -44,6 +44,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.6,
       ...(lastMod ? { lastModified: new Date(lastMod) } : {}),
+    });
+  }
+
+  // ブログ一覧の2ページ目以降
+  for (let n = 2; n <= getBlogPageCount(); n++) {
+    entries.push({
+      url: `${SITE_URL}/blog/page/${n}`,
+      changeFrequency: "weekly",
+      priority: 0.3,
     });
   }
 

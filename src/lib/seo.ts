@@ -191,6 +191,62 @@ export const localBusinessSchema = {
   ],
 };
 
+/**
+ * AboutPage 構造化データ（/about）
+ * 代表者・住所・営業時間など、ページ上に表示している内容と一致させる。
+ */
+export const aboutPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "@id": `${SITE_URL}/about/#aboutpage`,
+  url: `${SITE_URL}/about`,
+  name: `${siteConfig.name}について`,
+  inLanguage: "ja",
+  mainEntity: { "@id": `${SITE_URL}/#business` },
+  ...(siteConfig.representative
+    ? {
+        about: {
+          "@type": "Person",
+          name: siteConfig.representative,
+          jobTitle: "代表",
+          worksFor: { "@id": `${SITE_URL}/#organization` },
+        },
+      }
+    : {}),
+};
+
+/**
+ * CollectionPage + ItemList 構造化データ（一覧ページ用）
+ * 一覧に実際に表示している項目のみを渡すこと。
+ */
+export function collectionPageSchema(args: {
+  name: string;
+  description: string;
+  path: string;
+  items: { name: string; path: string }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${SITE_URL}${args.path}/#collection`,
+    url: `${SITE_URL}${args.path}`,
+    name: args.name,
+    description: args.description,
+    inLanguage: "ja",
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: args.items.length,
+      itemListElement: args.items.map((it, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: it.name,
+        url: `${SITE_URL}${it.path}`,
+      })),
+    },
+  };
+}
+
 /** Organization 構造化データ */
 export const organizationSchema = {
   "@context": "https://schema.org",

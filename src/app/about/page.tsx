@@ -6,7 +6,7 @@ import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import CTASection from "@/components/ui/CTASection";
 import { reasons } from "@/data/content";
 import { siteConfig } from "@/data/site";
-import { pageMeta } from "@/lib/seo";
+import { pageMeta, aboutPageSchema } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
   title: "456ちんねん堂について",
@@ -45,6 +45,10 @@ const infoRows: { label: string; value: string }[] = [
 export default function AboutPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageSchema) }}
+      />
       <PageHero
         en="About Us"
         title="456ちんねん堂について"

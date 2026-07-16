@@ -5,7 +5,7 @@ import ColumnCard from "@/components/ui/ColumnCard";
 import CTASection from "@/components/ui/CTASection";
 import { getColumnList } from "@/lib/columns";
 import { plannedColumns } from "@/data/columns";
-import { pageMeta } from "@/lib/seo";
+import { pageMeta, collectionPageSchema } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
   title: "お知らせ・コラム",
@@ -24,6 +24,20 @@ export default function ColumnListPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            collectionPageSchema({
+              name: "お知らせ・コラム",
+              description:
+                "お墓参りとお墓のお手入れに役立つ常設ガイドの一覧です。",
+              path: "/column",
+              items: columns.map((c) => ({ name: c.title, path: `/column/${c.slug}` })),
+            }),
+          ),
+        }}
+      />
       <PageHero
         en="Column"
         title="お知らせ・コラム"
