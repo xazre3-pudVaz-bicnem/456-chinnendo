@@ -42,10 +42,13 @@ export async function generateMetadata({
     description: area.description,
     path: `/area/${area.slug}`,
     keywords: [
+      `${area.city} お墓参り`,
       `${area.city} お墓参り代行`,
+      `${area.city} お墓掃除`,
       `${area.city} お墓掃除代行`,
       `${area.city} 墓石掃除`,
       `${area.city} お墓 草むしり`,
+      `${area.city} 霊園 墓地 清掃`,
     ],
   });
 }
@@ -120,6 +123,28 @@ export default async function AreaDetailPage({
           </Reveal>
         </div>
       </section>
+
+      {/* 地域固有の追加セクション（データにある場合のみ） */}
+      {area.sections && area.sections.length > 0 && (
+        <section className="bg-paper-100 py-14 md:py-20">
+          <div className="mx-auto max-w-3xl px-5 lg:px-8">
+            <div className="space-y-12">
+              {area.sections.map((s, i) => (
+                <Reveal key={s.heading} delay={i * 60}>
+                  <h2 className="font-heading rule-accent text-xl text-moss-700 md:text-2xl">
+                    {s.heading}
+                  </h2>
+                  <div className="mt-5 space-y-4 text-[15px] leading-loose text-ink-600">
+                    {s.body.map((p, j) => (
+                      <p key={j}>{p}</p>
+                    ))}
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 対応サービス */}
       <section className="bg-paper-200 py-14 md:py-20">

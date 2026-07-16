@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
@@ -66,6 +67,24 @@ export default function AboutPage() {
             <div className="mt-6 space-y-5 text-[15px] leading-loose text-ink-600">
               <p>
                 お墓は、ご先祖様や大切な方とのつながりを感じられる大切な場所です。456ちんねん堂は、お墓参りやお墓掃除を通して、そのご縁をつなぐお手伝いをするサービスです。
+              </p>
+              <p>
+                拠点は{siteConfig.address ? "千葉市花見川区" : "千葉県内"}
+                に置き、
+                <Link
+                  href="/area/chiba-city"
+                  className="text-moss-600 underline underline-offset-2 hover:text-moss-700"
+                >
+                  地元・千葉市のお墓参り代行
+                </Link>
+                をはじめ、
+                <Link
+                  href="/area"
+                  className="text-moss-600 underline underline-offset-2 hover:text-moss-700"
+                >
+                  千葉県内全域
+                </Link>
+                でご相談を承っています。
               </p>
               <p>
                 遠方にお住まいの方、ご多忙な方、お身体の事情でお墓へ行くことが難しい方の想いをお預かりし、ご家族に代わって一基一基心を込めてお参りとお掃除を行っています。

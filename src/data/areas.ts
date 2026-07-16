@@ -59,6 +59,11 @@ export type AreaPage = {
   faq: AreaFaq[];
   /** 近隣エリアのslug（内部リンク用） */
   neighbors: string[];
+  /**
+   * 追加セクション（任意）。その地域を深く掘り下げるときに使う。
+   * ※ 実在を確認できない墓地・霊園名や、地域事情の推測は書かないこと。
+   */
+  sections?: { heading: string; body: string[] }[];
 };
 
 /** 千葉県内の地域区分（/area 親ページの構成） */

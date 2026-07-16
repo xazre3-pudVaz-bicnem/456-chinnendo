@@ -330,6 +330,37 @@ export default function HomePage() {
             <p className="mt-6 text-[15px] leading-loose text-ink-600">
               456ちんねん堂は、千葉県内全域でお墓参り代行・お墓掃除代行のご相談を承っています。県内は距離による追加料金なしで対応します。墓地の場所や作業内容の確認がありますので、まずはお気軽にご相談ください。
             </p>
+            <p className="mt-4 text-[15px] leading-loose text-ink-600">
+              拠点を置く
+              <Link
+                href="/area/chiba-city"
+                className="mx-0.5 text-moss-600 underline underline-offset-2 hover:text-moss-700"
+              >
+                千葉市のお墓参り代行
+              </Link>
+              をはじめ、
+              <Link
+                href="/area/funabashi"
+                className="mx-0.5 text-moss-600 underline underline-offset-2 hover:text-moss-700"
+              >
+                船橋市
+              </Link>
+              ・
+              <Link
+                href="/area/matsudo"
+                className="mx-0.5 text-moss-600 underline underline-offset-2 hover:text-moss-700"
+              >
+                松戸市
+              </Link>
+              ・
+              <Link
+                href="/area/kashiwa"
+                className="mx-0.5 text-moss-600 underline underline-offset-2 hover:text-moss-700"
+              >
+                柏市
+              </Link>
+              など、県内27市の詳しいご案内もご用意しています。
+            </p>
             <Link
               href="/area"
               className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-moss-600 hover:text-moss-700"
