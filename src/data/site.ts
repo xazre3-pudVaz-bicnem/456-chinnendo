@@ -122,6 +122,7 @@ export const FOOTER_LINKS = {
     { label: "456ちんねん堂について", href: "/about" },
     { label: "よくある質問", href: "/faq" },
     { label: "お知らせ・コラム", href: "/column" },
+    { label: "ブログ", href: "/blog" },
     { label: "お問い合わせ", href: "/contact" },
   ],
   utility: [

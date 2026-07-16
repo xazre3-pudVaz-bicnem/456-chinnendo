@@ -58,6 +58,26 @@ npm start       # 本番サーバー
    - `NEXT_PUBLIC_SITE_URL`（本番ドメイン：`https://www.456chinnendo.com`）
 3. デプロイ。
 
+## ブログ自動投稿（Claude API + GitHub Actions）
+
+毎日1記事を自動生成し、`main` ブランチへ直接コミット → Vercel が自動公開します。
+
+- 生成記事：`content/blog/*.md`（Markdown + frontmatter）
+- 記事ページ：`/blog`（一覧）・`/blog/[slug]`（詳細）・`/blog/category/[category]`（カテゴリー別）
+- 生成スクリプト：`scripts/generate-daily-post.ts`（`npx tsx` で実行）
+- スケジュール：`.github/workflows/daily-blog.yml`（毎日 **11:20 JST = 02:20 UTC**、手動実行も可）
+- 使用モデル：既定は `claude-haiku-4-5-20251001`（コスト削減）。リポジトリ変数 `ANTHROPIC_MODEL` を設定するとそちらを優先
+- トピックプール（記事テーマ）はスクリプト内で管理し、未使用テーマを優先して重複を避けます
+
+### 有効化に必要な設定（GitHub）
+
+1. リポジトリ Settings → Secrets and variables → Actions
+2. **Secrets** に `ANTHROPIC_API_KEY` を追加（必須。これだけでOK）
+3. （任意）**Variables** に `ANTHROPIC_MODEL` を追加してモデルを変更
+4. Actions タブの「Daily Blog Post」→ "Run workflow" で手動テスト可能
+
+ローカルで試す場合：`ANTHROPIC_API_KEY=xxxx npx tsx scripts/generate-daily-post.ts`
+
 ## 確定済みの事業情報（2026-07-16 更新）
 
 - 料金：基本プラン **¥19,800**（墓石1基・税込表示・お花代/お線香代込み）／定期コース（2回）**¥35,000**（¥4,600お得）… Instagram料金表スクショに準拠。`src/data/site.ts` の `mainPrice` / `regularPrice` で変更可。
