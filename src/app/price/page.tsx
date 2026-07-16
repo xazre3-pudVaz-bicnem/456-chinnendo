@@ -36,6 +36,7 @@ export default function PricePage() {
         title="料金案内"
         lead="分かりやすい料金で、丁寧に対応します。追加料金が発生する場合も、事前に必ずご案内します。"
         breadcrumb={[{ label: "料金案内" }]}
+        image="price-hero.jpg"
       />
 
       <section className="bg-washi py-16 md:py-24">

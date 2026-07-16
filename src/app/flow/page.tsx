@@ -24,6 +24,7 @@ export default function FlowPage() {
         title="ご利用の流れ"
         lead="ご相談から完了報告まで、順を追って分かりやすくご案内します。"
         breadcrumb={[{ label: "ご利用の流れ" }]}
+        image="flow-hero.jpg"
       />
 
       <section className="bg-washi py-16 md:py-24">

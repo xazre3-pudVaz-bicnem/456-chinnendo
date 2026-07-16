@@ -105,6 +105,7 @@ export default async function AreaDetailPage({
         title={`${area.city}のお墓参り代行・お墓掃除代行`}
         lead={`${area.city}の墓地・霊園でのお参り・お掃除を、心を込めて代行します。距離による追加料金はありません。`}
         breadcrumb={[{ label: "対応エリア", href: "/area" }, { label: area.city }]}
+        image="area-hero.jpg"
       />
 
       {/* 地域の説明 */}

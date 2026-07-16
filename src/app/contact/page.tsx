@@ -22,6 +22,7 @@ export default function ContactPage() {
         title="お問い合わせ"
         lead="お墓の場所や状態が分からない場合も、まずは分かる範囲でお聞かせください。ご希望を確認したうえで、対応内容と料金をご案内します。"
         breadcrumb={[{ label: "お問い合わせ" }]}
+        image="contact-hero.jpg"
       />
 
       <section className="bg-washi py-16 md:py-24">

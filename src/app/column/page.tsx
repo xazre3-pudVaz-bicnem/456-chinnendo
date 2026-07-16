@@ -29,6 +29,7 @@ export default function ColumnListPage() {
         title="お知らせ・コラム"
         lead="お墓参りとお墓のお手入れに役立つ情報をお届けします。"
         breadcrumb={[{ label: "お知らせ・コラム" }]}
+        image="column-hero.jpg"
       />
 
       <section className="bg-washi py-16 md:py-24">

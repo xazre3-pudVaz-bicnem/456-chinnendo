@@ -52,6 +52,7 @@ export default async function BlogCategoryPage({
         title={name}
         lead={`「${name}」に関する記事の一覧です。`}
         breadcrumb={[{ label: "ブログ", href: "/blog" }, { label: name }]}
+        image="blog-hero.jpg"
       />
 
       <section className="bg-washi py-16 md:py-24">

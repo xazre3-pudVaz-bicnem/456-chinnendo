@@ -26,6 +26,7 @@ export default function BlogListPage() {
         title="ブログ"
         lead="お墓参り代行・お墓掃除代行に役立つ情報を、毎日お届けしています。"
         breadcrumb={[{ label: "ブログ" }]}
+        image="blog-hero.jpg"
       />
 
       <section className="bg-washi py-16 md:py-24">

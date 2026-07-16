@@ -26,6 +26,7 @@ export default function FaqPage() {
         title="よくある質問"
         lead="ご相談の前によくいただくご質問をまとめました。掲載のない内容もお気軽にお問い合わせください。"
         breadcrumb={[{ label: "よくある質問" }]}
+        image="faq-hero.jpg"
       />
 
       <section className="bg-washi py-16 md:py-24">

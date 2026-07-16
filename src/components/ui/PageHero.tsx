@@ -24,16 +24,24 @@ export default function PageHero({
     <>
       <section className="relative overflow-hidden bg-moss-800 text-paper-50">
         <div className="absolute inset-0">
-          <ImagePlaceholder
-            src={image}
-            alt=""
-            label={imageLabel}
-            fill
-            tone="dark"
-            overlay
-            priority
-            sizes="100vw"
-          />
+          {image ? (
+            <ImagePlaceholder
+              src={image}
+              alt=""
+              label={imageLabel}
+              fill
+              tone="dark"
+              overlay
+              priority
+              sizes="100vw"
+            />
+          ) : (
+            // 写真未設定のページ（プライバシー等）は、カメラアイコンを出さず
+            // 深緑の地紋グラデーションで自然に見せる
+            <div className="absolute inset-0 bg-moss-800 bg-grid-soft" aria-hidden>
+              <div className="absolute inset-0 bg-gradient-to-b from-moss-900/40 via-transparent to-moss-900/50" />
+            </div>
+          )}
         </div>
         <div className="relative mx-auto max-w-7xl px-5 pb-14 pt-28 md:pb-16 md:pt-32 lg:px-8">
           {en && (
