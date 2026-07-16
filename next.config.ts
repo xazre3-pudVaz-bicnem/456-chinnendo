@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    // 許可する画質。ヒーロー背景は暗いオーバーレイと文字の下に敷くため、
+    // 60 でも見た目は変わらず、LCPを大きく改善できる（本文中の写真は75）。
+    qualities: [60, 75],
   },
   async redirects() {
     return [

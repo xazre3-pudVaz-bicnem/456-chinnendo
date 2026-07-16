@@ -22,6 +22,12 @@ type Props = {
   overlay?: boolean;
   /** プレースホルダーの濃淡: "light"=淡いベージュ / "dark"=深緑 */
   tone?: "light" | "dark";
+  /**
+   * 画質（next.config.ts の images.qualities に含まれる値のみ）。
+   * 既定は overlay 付き（＝暗い幕と文字の下に敷くヒーロー背景）なら 60、
+   * それ以外の本文中の写真は 75。
+   */
+  quality?: 60 | 75;
 };
 
 const BASE = "/images/";
@@ -37,9 +43,12 @@ export default function ImagePlaceholder({
   fill = false,
   overlay = false,
   tone = "light",
+  quality,
 }: Props) {
   const [errored, setErrored] = useState(false);
   const showImage = src && !errored;
+  // オーバーレイ付き＝ヒーロー背景。暗い幕の下なので画質を落としてLCPを改善
+  const imgQuality = quality ?? (overlay ? 60 : 75);
 
   const wrapperStyle = fill ? undefined : { aspectRatio: ratio };
   const wrapperCls = fill
@@ -55,6 +64,7 @@ export default function ImagePlaceholder({
           fill
           sizes={sizes}
           priority={priority}
+          quality={imgQuality}
           className="object-cover ken-burns"
           onError={() => setErrored(true)}
         />

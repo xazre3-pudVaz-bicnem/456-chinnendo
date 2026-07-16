@@ -57,6 +57,8 @@ export default function HomePage() {
             tone="dark"
             priority
             sizes="100vw"
+            // 下のグラデーションと文字の下に敷く背景のため画質60でLCPを軽く
+            quality={60}
           />
           {/* 文字可読性のためのグラデーションオーバーレイ */}
           <div
