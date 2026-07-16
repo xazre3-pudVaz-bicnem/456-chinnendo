@@ -1,32 +1,81 @@
 /**
  * 料金情報（トップ・料金ページで共有）
- * 料金の変更は siteConfig.mainPrice と、このファイルの included / notes を編集してください。
+ * 料金の変更は siteConfig.mainPrice / regularPrice と、このファイルの
+ * included / notes を編集してください。
+ *
+ * ※Instagram掲載の料金表（2026年7月確認）に準拠：
+ *   基本プラン ¥19,800（お花代・お線香代込み）
+ *   定期コース（2回）¥35,000（お花代・お線香代込み・¥4,600お得）
  */
 import { siteConfig } from "./site";
 
-/** 表示用の金額フォーマット（例: 22,000） */
+/** 表示用の金額フォーマット（例: 19,800） */
 export function formatYen(value: number): string {
   return value.toLocaleString("ja-JP");
 }
 
+export type Plan = {
+  /** 英語ラベル */
+  en: string;
+  name: string;
+  unit: string;
+  price: number;
+  taxNote: string; // 要確認：税込かどうか（Instagram料金表に明記なし）
+  /** 価格の下に添える一言 */
+  priceNote: string;
+  /** プランの説明 */
+  description: string;
+  /** 料金に含まれる内容 */
+  included: string[];
+  /** お得額など（任意） */
+  highlight?: string;
+};
+
+/** 基本プラン */
+const basic: Plan = {
+  en: "Basic Plan",
+  name: "基本プラン",
+  unit: "墓石1基",
+  price: siteConfig.mainPrice,
+  taxNote: "税込",
+  priceNote: "お花代・お線香代込み",
+  description:
+    "お墓参り・お墓掃除の基本プランです。お参りからお掃除、写真報告まで、ひとつのプランにまとめています。",
+  included: [
+    "心を込めたお参り",
+    "お花・お線香のお供え（代金込み）",
+    "敷地全体の草むしり",
+    "しつこい水垢・苔などの汚れ除去",
+    "敷地全体の徹底清掃",
+    "作業前後の写真報告",
+    `片道${siteConfig.includedDistanceKm}kmまでの移動費・高速道路料金`,
+  ],
+};
+
+/** 定期コース（基本プランの内容を2回実施） */
+const regular: Plan = {
+  en: "Regular Course",
+  name: `定期コース（${siteConfig.regularTimes}回）`,
+  unit: `基本プラン${siteConfig.regularTimes}回分`,
+  price: siteConfig.regularPrice,
+  taxNote: "税込",
+  priceNote: "お花代・お線香代込み",
+  description:
+    "基本プランの内容を2回実施する、まとめてお得なコースです。お彼岸・お盆・年末・命日など、ご希望の時期を承ります。",
+  included: [
+    "基本プランの内容を2回実施",
+    "お彼岸・お盆・年末・命日などご希望の時期に対応",
+    "毎回、作業前後の写真報告",
+  ],
+  highlight: `¥${formatYen(
+    siteConfig.mainPrice * siteConfig.regularTimes - siteConfig.regularPrice,
+  )}お得`,
+};
+
 export const pricing = {
-  /** 基本プラン */
-  basic: {
-    name: "基本プラン",
-    unit: "墓石1基",
-    price: siteConfig.mainPrice,
-    taxNote: "税込",
-    /** 料金に含まれる内容 */
-    included: [
-      "墓石全体の水洗い・拭き上げ",
-      "墓地周辺の雑草取り",
-      "落ち葉・枯れ葉・ゴミの回収",
-      "香炉・花立てなど墓前用品周辺の清掃",
-      "作業前後の写真報告",
-      `片道${siteConfig.includedDistanceKm}kmまでの移動費`,
-      `片道${siteConfig.includedDistanceKm}kmまでの高速道路料金`,
-    ],
-  },
+  basic,
+  regular,
+  plans: [basic, regular] as Plan[],
 
   /** 追加費用が発生する可能性のあるケース（推測ではなく「相談・見積もり」として案内） */
   additional: [
@@ -50,10 +99,6 @@ export const pricing = {
 
   /** 未確定のため断定しない項目（表示は「お問い合わせ時にご案内」） */ // 要確認
   toConfirm: {
-    flowerIncense:
-      "供花・線香の扱い（料金に含まれるか等）は、ご希望内容により異なります。お問い合わせ時にご案内します。",
-    regularPlan:
-      "定期的な清掃・管理のプランについても承っています。ご希望の頻度をお聞かせいただければ、内容と料金を個別にご案内します。",
     payment:
       "お支払い方法については、お問い合わせ時に個別にご案内いたします。",
     cancel: "キャンセルについては、お問い合わせ時に個別にご案内いたします。",

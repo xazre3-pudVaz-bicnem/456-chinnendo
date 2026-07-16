@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { contactSchema } from "@/lib/contactSchema";
+import { siteConfig } from "@/data/site";
 
 /**
  * お問い合わせ受信エンドポイント。
@@ -108,7 +109,8 @@ export async function POST(req: Request) {
       message: cleanKeepNewline(p.message),
     };
 
-    const toEmail = process.env.CONTACT_TO_EMAIL;
+    // 送信先：環境変数 > siteConfig.email の順で使用
+    const toEmail = process.env.CONTACT_TO_EMAIL || siteConfig.email;
     const apiKey = process.env.RESEND_API_KEY;
     const fromEmail = process.env.CONTACT_FROM_EMAIL || "onboarding@resend.dev";
 

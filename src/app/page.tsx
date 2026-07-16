@@ -188,7 +188,10 @@ export default function HomePage() {
               tone="light"
             />
             <p className="mt-6 text-[15px] leading-loose text-paper-200/90">
-              基本プランは墓石1基あたり{formatYen(pricing.basic.price)}円（税込）。墓石と墓地周辺のお掃除、雑草取り、作業前後の写真報告に加え、片道{siteConfig.includedDistanceKm}kmまでの移動費・高速道路料金を含みます。
+              基本プランは墓石1基あたり{formatYen(pricing.basic.price)}円（税込・お花代・お線香代込み）。心を込めたお参りから敷地全体の徹底清掃、作業前後の写真報告、片道{siteConfig.includedDistanceKm}kmまでの移動費・高速道路料金まで含まれます。
+            </p>
+            <p className="mt-4 text-[15px] leading-loose text-paper-200/90">
+              お彼岸・お盆・年末・命日などに合わせてご利用いただける、定期コース（{siteConfig.regularTimes}回 {formatYen(pricing.regular.price)}円）もご用意しています。
             </p>
             <p className="mt-4 text-sm leading-loose text-paper-200/75">
               片道{siteConfig.includedDistanceKm}kmを超える場合や、墓地の広さ、墓石の数、汚れや雑草の状態によっては、事前に追加料金をご案内する場合があります。

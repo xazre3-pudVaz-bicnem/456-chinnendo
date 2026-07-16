@@ -40,8 +40,16 @@ export const siteConfig = {
   area: "千葉県内全域",
   areaRegion: "千葉県",
 
-  /** 基本料金（税込・墓石1基）— 料金の変更はこの値だけでOK */
-  mainPrice: 22000,
+  /**
+   * 基本料金（墓石1基・お花代/お線香代込み）— 料金の変更はこの値だけでOK
+   * ※Instagram掲載の料金表（2026年7月確認）に準拠
+   * 要確認：税込表記かどうか（現状サイトでは「税込」と表示）
+   */
+  mainPrice: 19800,
+  /** 定期コース（基本プランの内容を2回実施・お花代/お線香代込み） */
+  regularPrice: 35000,
+  /** 定期コースの実施回数 */
+  regularTimes: 2,
   /** 料金に含まれる移動距離（片道・km） */
   includedDistanceKm: 30,
 
@@ -50,7 +58,8 @@ export const siteConfig = {
   postalCode: "", // 要確認
   businessHours: "", // 要確認（営業時間は勝手に作らない）
   representative: "", // 要確認（代表者名）
-  email: "", // 要確認（問い合わせ受信先。フォームは環境変数 CONTACT_TO_EMAIL で設定）
+  /** 問い合わせ受信先（フォームの送信先は環境変数 CONTACT_TO_EMAIL が優先） */
+  email: "chinnen.456@au.com",
   established: "", // 要確認（創業年）
   paymentMethods: "", // 要確認（支払い方法）
 

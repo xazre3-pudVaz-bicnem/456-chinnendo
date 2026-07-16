@@ -28,21 +28,27 @@ export default function PricePage() {
 
       <section className="bg-washi py-16 md:py-24">
         <div className="mx-auto max-w-5xl px-5 lg:px-8">
-          {/* 基本プラン */}
-          <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-14">
-            <Reveal>
-              <SectionHeading en="Basic Plan" title="基本プラン" />
-              <p className="mt-6 text-[15px] leading-loose text-ink-600">
-                お墓参り・お墓掃除の基本プランです。墓石1基あたりの料金で、墓石と墓地周辺のお掃除から作業前後の写真報告まで含まれます。
-              </p>
-              <p className="mt-4 text-[15px] leading-loose text-ink-600">
-                片道{siteConfig.includedDistanceKm}kmまでの移動費・高速道路料金も基本料金に含まれています。安さだけを追う清掃ではなく、一基一基を丁寧に、お墓をいたわりながら作業することを大切にしています。
-              </p>
-            </Reveal>
-            <Reveal delay={100}>
-              <PriceCard />
-            </Reveal>
+          {/* 料金プラン */}
+          <Reveal>
+            <SectionHeading
+              en="Plans"
+              title="料金プラン"
+              lead={`お参り・お掃除・写真報告に加え、お花代・お線香代、片道${siteConfig.includedDistanceKm}kmまでの移動費・高速道路料金まで含めた分かりやすい料金です。`}
+            />
+          </Reveal>
+          <div className="mt-10 grid grid-cols-1 items-stretch gap-8 md:grid-cols-2">
+            {pricing.plans.map((plan, i) => (
+              <Reveal key={plan.name} delay={i * 100}>
+                <PriceCard plan={plan} />
+              </Reveal>
+            ))}
           </div>
+          <Reveal className="mt-6">
+            <p className="text-sm leading-loose text-ink-600">
+              定期コースは、基本プランの内容を{siteConfig.regularTimes}
+              回実施するお得なコースです。お彼岸・お盆・年末・命日など、ご希望の時期をお聞かせください。安さだけを追う清掃ではなく、一基一基を丁寧に、お墓をいたわりながら作業することを大切にしています。
+            </p>
+          </Reveal>
 
           {/* 追加料金が発生するケース */}
           <Reveal className="mt-16 md:mt-24">
@@ -71,8 +77,6 @@ export default function PricePage() {
                 お問い合わせ時にご案内する内容
               </p>
               <ul className="mt-4 space-y-3 text-sm leading-loose text-ink-600">
-                <li>{pricing.toConfirm.flowerIncense}</li>
-                <li>{pricing.toConfirm.regularPlan}</li>
                 <li>{pricing.toConfirm.payment}</li>
                 <li>{pricing.toConfirm.cancel}</li>
               </ul>
