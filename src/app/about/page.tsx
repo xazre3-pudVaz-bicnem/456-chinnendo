@@ -19,13 +19,24 @@ export const metadata: Metadata = pageMeta({
 /** 事業者情報（未確定項目は siteConfig を参照し、空なら「確認中」を表示） */
 const infoRows: { label: string; value: string }[] = [
   { label: "屋号", value: siteConfig.name },
-  { label: "対応エリア", value: siteConfig.area },
+  { label: "対応エリア", value: `${siteConfig.area}（距離による追加料金なし）` },
   {
     label: "サービス内容",
-    value: "お墓参り代行／お墓掃除代行／墓地周辺の清掃・雑草取り／作業前後の写真報告",
+    value: "お墓参り代行／お墓掃除代行／墓地周辺の清掃・草むしり／作業前後の写真報告",
+  },
+  {
+    label: "料金",
+    value: `基本プラン 墓石1基 ${siteConfig.mainPrice.toLocaleString("ja-JP")}円（税込・お花代/お線香代込み）／定期コース（${siteConfig.regularTimes}回）${siteConfig.regularPrice.toLocaleString("ja-JP")}円`,
   },
   { label: "お電話", value: siteConfig.phone },
+  { label: "メール", value: siteConfig.email },
+  { label: "公式LINE", value: siteConfig.lineId },
   { label: "Instagram", value: siteConfig.instagramHandle },
+  {
+    label: "作業方針",
+    value:
+      "墓石を傷める強い薬剤・研磨は使用しない／追加作業は必ず事前にご案内／作業前後を写真でご報告",
+  },
   { label: "代表者", value: siteConfig.representative || "確認中" },
   { label: "所在地", value: siteConfig.address || "確認中" },
   { label: "営業時間", value: siteConfig.businessHours || "確認中" },

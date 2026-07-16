@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import MobileFixedNav from "@/components/layout/MobileFixedNav";
+import Analytics from "@/components/analytics/Analytics";
 import { siteConfig, SITE_URL } from "@/data/site";
 import {
   localBusinessSchema,
@@ -73,6 +74,14 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
   alternates: { canonical: SITE_URL },
+  // Google Search Console のHTMLタグ認証（環境変数で設定。未設定なら出力されない）
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? {
+        verification: {
+          google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+        },
+      }
+    : {}),
   // ファビコンは file-based（src/app/icon.png / apple-icon.png）で自動設定
 };
 
@@ -111,6 +120,7 @@ export default function RootLayout({
         >
           本文へスキップ
         </a>
+        <Analytics />
         <Header />
         <main id="main" className="flex-1 scroll-mt-16 lg:scroll-mt-[4.5rem]">
           {children}

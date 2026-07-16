@@ -96,6 +96,41 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ============ 02.5 サービス要約（30秒で分かる回答ブロック）============ */}
+      <section className="border-b border-paper-300 bg-paper-50">
+        <div className="mx-auto max-w-7xl px-5 py-10 md:py-12 lg:px-8">
+          <p className="text-[15px] leading-loose text-ink-700 md:text-base">
+            <strong className="text-moss-700">456ちんねん堂</strong>
+            は、千葉県内全域でお墓参り代行・お墓掃除代行を行っています。心を込めたお参り、お花・お線香のお供え、墓石や敷地の清掃、草むしり、作業前後の写真報告まで対応。ご相談から報告まで非対面で完結できます。
+          </p>
+          <dl className="mt-5 grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
+            <div className="border border-paper-300 bg-paper-100 p-3.5">
+              <dt className="text-xs text-ink-500">基本料金（墓石1基）</dt>
+              <dd className="mt-1 font-heading text-lg text-moss-700">
+                {formatYen(pricing.basic.price)}円
+                <span className="ml-1 text-xs font-normal text-ink-500">税込</span>
+              </dd>
+              <dd className="mt-0.5 text-xs text-ink-500">お花代・お線香代込み</dd>
+            </div>
+            <div className="border border-paper-300 bg-paper-100 p-3.5">
+              <dt className="text-xs text-ink-500">対応エリア</dt>
+              <dd className="mt-1 font-heading text-lg text-moss-700">千葉県内全域</dd>
+              <dd className="mt-0.5 text-xs text-ink-500">距離による追加料金なし</dd>
+            </div>
+            <div className="border border-paper-300 bg-paper-100 p-3.5">
+              <dt className="text-xs text-ink-500">ご報告</dt>
+              <dd className="mt-1 font-heading text-lg text-moss-700">作業前後の写真</dd>
+              <dd className="mt-0.5 text-xs text-ink-500">遠方の方も状態を確認できます</dd>
+            </div>
+            <div className="border border-paper-300 bg-paper-100 p-3.5">
+              <dt className="text-xs text-ink-500">ご相談方法</dt>
+              <dd className="mt-1 font-heading text-lg text-moss-700">非対面でOK</dd>
+              <dd className="mt-0.5 text-xs text-ink-500">電話・LINE・Instagram・フォーム</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
       {/* ============ 03 導入セクション ============ */}
       <section className="bg-washi py-20 md:py-28">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2 lg:gap-16 lg:px-8">
@@ -188,13 +223,13 @@ export default function HomePage() {
               tone="light"
             />
             <p className="mt-6 text-[15px] leading-loose text-paper-200/90">
-              基本プランは墓石1基あたり{formatYen(pricing.basic.price)}円（税込・お花代・お線香代込み）。心を込めたお参りから敷地全体の徹底清掃、作業前後の写真報告、片道{siteConfig.includedDistanceKm}kmまでの移動費・高速道路料金まで含まれます。
+              基本プランは墓石1基あたり{formatYen(pricing.basic.price)}円（税込・お花代・お線香代込み）。心を込めたお参りから敷地全体の徹底清掃、作業前後の写真報告、千葉県内の移動費・高速道路料金まで含まれます。
             </p>
             <p className="mt-4 text-[15px] leading-loose text-paper-200/90">
               お彼岸・お盆・年末・命日などに合わせてご利用いただける、定期コース（{siteConfig.regularTimes}回 {formatYen(pricing.regular.price)}円）もご用意しています。
             </p>
             <p className="mt-4 text-sm leading-loose text-paper-200/75">
-              片道{siteConfig.includedDistanceKm}kmを超える場合や、墓地の広さ、墓石の数、汚れや雑草の状態によっては、事前に追加料金をご案内する場合があります。
+              千葉県内は距離による追加料金なし。墓地の広さ、墓石の数、汚れや雑草の状態によっては、事前に追加料金をご案内する場合があります。
             </p>
             <Link
               href="/price"
@@ -293,7 +328,7 @@ export default function HomePage() {
               title={<>千葉県内全域から<br />ご相談いただけます。</>}
             />
             <p className="mt-6 text-[15px] leading-loose text-ink-600">
-              456ちんねん堂は、千葉県内全域でお墓参り代行・お墓掃除代行のご相談を承っています。墓地の場所や作業内容によって、対応の可否や出張費用が変わる場合がありますので、まずはお気軽にご相談ください。
+              456ちんねん堂は、千葉県内全域でお墓参り代行・お墓掃除代行のご相談を承っています。県内は距離による追加料金なしで対応します。墓地の場所や作業内容の確認がありますので、まずはお気軽にご相談ください。
             </p>
             <Link
               href="/area"
@@ -362,6 +397,56 @@ export default function HomePage() {
               <ArrowRight className="h-4 w-4" strokeWidth={1.75} aria-hidden />
             </Link>
           </Reveal>
+
+          {/* ご相談前の案内（準備情報・対応が難しい場合） */}
+          <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Reveal>
+              <div className="h-full border border-paper-300 bg-paper-50 p-6">
+                <h3 className="font-heading text-lg text-moss-700">
+                  ご相談前にご準備いただきたい情報
+                </h3>
+                <ul className="mt-3 space-y-2 text-sm leading-relaxed text-ink-600">
+                  {[
+                    "墓地・霊園名（分かる範囲で大丈夫です）",
+                    "墓地のおおよその所在地",
+                    "区画番号やお墓の目印（分かれば）",
+                    "墓石の数",
+                    "ご希望の作業と時期（お盆前・命日など）",
+                  ].map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-wakaba-400" aria-hidden />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3 text-xs leading-relaxed text-ink-500">
+                  すべて揃っていなくても構いません。一緒に確認しながら進められます。
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={80}>
+              <div className="h-full border border-paper-300 bg-paper-50 p-6">
+                <h3 className="font-heading text-lg text-moss-700">
+                  対応が難しい場合があること
+                </h3>
+                <ul className="mt-3 space-y-2 text-sm leading-relaxed text-ink-600">
+                  {[
+                    "墓石の修理・彫刻・据え直しなどの石材工事",
+                    "墓地・霊園の規則で立ち入りや作業が制限されている場合",
+                    "強い薬剤や研磨が必要になる汚れの除去（墓石を傷めないため行いません）",
+                  ].map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-400" aria-hidden />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3 text-xs leading-relaxed text-ink-500">
+                  対応可否が分からない場合も、まずはご相談ください。状況を確認のうえご案内します。
+                </p>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -410,7 +495,27 @@ export default function HomePage() {
                 </Reveal>
               ))}
             </div>
-            <Reveal className="mt-10 text-center">
+            {/* 時期別の読みもの */}
+            <Reveal className="mt-10">
+              <div className="flex flex-wrap items-center justify-center gap-2.5">
+                <span className="text-sm text-ink-500">時期から探す：</span>
+                {[
+                  { href: "/column/obon-mae-ohaka-soji", label: "お盆前のお墓掃除" },
+                  { href: "/column/ohigan-ohakamairi-junbi", label: "お彼岸の準備" },
+                  { href: "/column/meinichi-ohakamairi-daiko", label: "命日のお参り" },
+                  { href: "/column/nenmatsu-ohaka-soji", label: "年末のお墓掃除" },
+                ].map((l) => (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    className="border border-paper-300 bg-paper-50 px-3.5 py-1.5 text-sm text-moss-700 transition-colors hover:border-moss-500"
+                  >
+                    {l.label}
+                  </Link>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal className="mt-8 text-center">
               <Link
                 href="/column"
                 className="inline-flex items-center gap-2 text-sm font-medium text-moss-600 hover:text-moss-700"

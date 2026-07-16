@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Phone, Instagram, Mail } from "lucide-react";
+import { Phone, Instagram, Mail, MessageCircle } from "lucide-react";
 import { siteConfig } from "@/data/site";
 
 /**
- * スマホ画面下部の固定ナビ（電話 / Instagram / 問い合わせ）。
+ * スマホ画面下部の固定ナビ（電話 / LINE / Instagram / 問い合わせ）。
  * - iPhoneのsafe-area-inset-bottomに対応
  * - フォーム入力の邪魔にならないよう、お問い合わせページでは非表示
  */
@@ -17,7 +17,7 @@ export default function MobileFixedNav() {
   return (
     <nav
       aria-label="クイックナビゲーション"
-      className="pb-safe fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t border-moss-700 bg-moss-800 text-paper-50 shadow-[0_-4px_16px_rgba(0,0,0,0.15)] lg:hidden"
+      className="pb-safe fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-moss-700 bg-moss-800 text-paper-50 shadow-[0_-4px_16px_rgba(0,0,0,0.15)] lg:hidden"
     >
       <a
         href={siteConfig.phoneTel}
@@ -25,6 +25,15 @@ export default function MobileFixedNav() {
       >
         <Phone className="h-5 w-5" strokeWidth={1.5} aria-hidden />
         電話する
+      </a>
+      <a
+        href={siteConfig.line}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex flex-col items-center justify-center gap-0.5 border-l border-moss-700 bg-[#06C755] py-2.5 text-[11px] tracking-wide text-white"
+      >
+        <MessageCircle className="h-5 w-5" strokeWidth={1.5} aria-hidden />
+        LINE
       </a>
       <a
         href={siteConfig.instagram}

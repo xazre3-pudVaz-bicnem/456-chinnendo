@@ -7,10 +7,32 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import CTASection from "@/components/ui/CTASection";
+import { getColumnList } from "@/lib/columns";
+
+/** サービスごとの関連コラム（slug指定） */
+const RELATED_COLUMN_SLUGS: Record<string, string[]> = {
+  "ohakamairi-daiko": [
+    "ohakamairi-daiko-towa",
+    "ohakamairi-daiko-dekiru-dekinai",
+    "ohakamairi-daiko-erabikata",
+    "hitaimen-ohakamairi-irai",
+  ],
+  "ohaka-soji": [
+    "ohaka-soji-daiko-souba",
+    "shashin-houkoku-kakunin",
+    "ohaka-zassou-taisaku",
+    "boseki-souji-chuui",
+  ],
+};
 
 /** サービス詳細ページ共通テンプレート */
 export default function ServiceDetail({ service }: { service: Service }) {
   const other = services.find((s) => s.slug !== service.slug);
+
+  const allColumns = getColumnList();
+  const relatedColumns = (RELATED_COLUMN_SLUGS[service.slug] ?? [])
+    .map((slug) => allColumns.find((c) => c.slug === slug))
+    .filter((c): c is NonNullable<typeof c> => Boolean(c));
 
   return (
     <>
@@ -92,6 +114,37 @@ export default function ServiceDetail({ service }: { service: Service }) {
           )}
         </div>
       </section>
+
+      {/* 関連コラム */}
+      {relatedColumns.length > 0 && (
+        <section className="bg-paper-200 py-14">
+          <div className="mx-auto max-w-7xl px-5 lg:px-8">
+            <p className="font-en text-xs uppercase tracking-[0.25em] text-moss-500">
+              Column
+            </p>
+            <h2 className="font-heading mt-1 text-xl text-moss-700">
+              {service.title}に関する読みもの
+            </h2>
+            <ul className="mt-5 grid grid-cols-1 gap-2 md:grid-cols-2">
+              {relatedColumns.map((c) => (
+                <li key={c.slug}>
+                  <Link
+                    href={`/column/${c.slug}`}
+                    className="group flex items-start gap-3 border border-paper-300 bg-paper-50 px-4 py-3.5 transition-colors hover:border-moss-500"
+                  >
+                    <span className="mt-0.5 shrink-0 bg-wakaba-200 px-2 py-0.5 text-[11px] text-moss-700">
+                      {c.category}
+                    </span>
+                    <span className="text-sm leading-relaxed text-ink-700 transition-colors group-hover:text-moss-700">
+                      {c.title}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* もう一方のサービスへの導線 */}
       {other && (

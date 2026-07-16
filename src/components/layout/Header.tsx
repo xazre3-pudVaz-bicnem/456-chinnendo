@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { Phone, Instagram, Menu, X, ChevronDown } from "lucide-react";
+import { Phone, Instagram, MessageCircle, Menu, X, ChevronDown } from "lucide-react";
 import { siteConfig, NAV_ITEMS } from "@/data/site";
 
 export default function Header() {
@@ -203,6 +203,15 @@ export default function Header() {
             <p className="mt-2 text-center text-xs leading-relaxed text-ink-500">
               {siteConfig.phoneNote}
             </p>
+            <a
+              href={siteConfig.line}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 flex items-center justify-center gap-2 bg-[#06C755] py-3.5 tracking-wide text-white"
+            >
+              <MessageCircle className="h-4 w-4" strokeWidth={1.75} aria-hidden />
+              公式LINEで相談（{siteConfig.lineId}）
+            </a>
             <a
               href={siteConfig.instagram}
               target="_blank"

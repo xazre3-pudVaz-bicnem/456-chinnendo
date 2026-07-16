@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Phone, Instagram, Clock } from "lucide-react";
+import { Phone, Instagram, MessageCircle, Clock } from "lucide-react";
 import PageHero from "@/components/ui/PageHero";
 import Reveal from "@/components/ui/Reveal";
 import ContactForm from "@/components/forms/ContactForm";
@@ -26,8 +26,8 @@ export default function ContactPage() {
 
       <section className="bg-washi py-16 md:py-24">
         <div className="mx-auto max-w-5xl px-5 lg:px-8">
-          {/* 電話・Instagram */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {/* 電話・LINE・Instagram */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <Reveal>
               <a
                 href={siteConfig.phoneTel}
@@ -40,7 +40,21 @@ export default function ContactPage() {
                 </span>
               </a>
             </Reveal>
-            <Reveal delay={80}>
+            <Reveal delay={60}>
+              <a
+                href={siteConfig.line}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-full flex-col items-center justify-center gap-2 border border-[#06C755]/40 bg-paper-50 p-7 text-center transition-colors hover:border-[#06C755]"
+              >
+                <MessageCircle className="h-7 w-7 text-[#06C755]" strokeWidth={1.5} aria-hidden />
+                <span className="mt-1 text-sm text-ink-500">公式LINEでのご相談</span>
+                <span className="font-heading text-xl tracking-wide text-moss-700">
+                  {siteConfig.lineId}
+                </span>
+              </a>
+            </Reveal>
+            <Reveal delay={120}>
               <a
                 href={siteConfig.instagram}
                 target="_blank"

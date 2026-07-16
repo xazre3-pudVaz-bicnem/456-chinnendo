@@ -36,6 +36,10 @@ export const siteConfig = {
   instagram: "https://www.instagram.com/456.chinnendo/?hl=ja",
   instagramHandle: "@456.chinnendo",
 
+  /** LINE公式アカウント */
+  line: "https://line.me/R/ti/p/@396iqsdk",
+  lineId: "@396iqsdk",
+
   /** 対応エリア（概要） */
   area: "千葉県内全域",
   areaRegion: "千葉県",
@@ -50,8 +54,7 @@ export const siteConfig = {
   regularPrice: 35000,
   /** 定期コースの実施回数 */
   regularTimes: 2,
-  /** 料金に含まれる移動距離（片道・km） */
-  includedDistanceKm: 30,
+  // 移動費・高速道路料金は千葉県内全域で基本料金に込み（距離による追加料金なし）
 
   // ---- 以下は未確定。確認後に入力してください ----
   address: "", // 要確認（Instagram掲載の住所は未検証のため空欄）
@@ -82,10 +85,10 @@ export const siteConfig = {
   hasLogo: true,
 } as const;
 
-/** 本番URL（環境変数優先） */
+/** 本番URL（環境変数優先。本番ドメインは www.456chinnendo.com） */
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-  "https://456chinnendo.jp"; // 要確認：本番ドメイン確定後に .env / Vercel で設定
+  "https://www.456chinnendo.com";
 
 /** グローバルナビゲーション */
 export const NAV_ITEMS = [

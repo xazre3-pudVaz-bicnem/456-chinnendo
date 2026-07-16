@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Copy, Check, Phone, Instagram } from "lucide-react";
+import { Mail, Copy, Check, Phone, Instagram, MessageCircle } from "lucide-react";
 import {
   contactSchema,
   type ContactInput,
@@ -71,6 +71,12 @@ export default function ContactForm() {
     const mail = buildMail(values);
     setOpened(mail);
     setCopied(false);
+    // GA4コンバージョン計測（設定時のみ。問い合わせ内容は送信しない）
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "contact_mailto_open", {
+        page_path: window.location.pathname,
+      });
+    }
     // メールソフトを起動（宛先・件名・本文を自動セット）
     window.location.assign(
       `mailto:${siteConfig.email}?subject=${encodeURIComponent(
@@ -145,6 +151,15 @@ export default function ContactForm() {
           >
             <Phone className="h-4 w-4" strokeWidth={1.75} aria-hidden />
             電話で相談する（{siteConfig.phone}）
+          </a>
+          <a
+            href={siteConfig.line}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 bg-[#06C755] px-6 py-3.5 text-white"
+          >
+            <MessageCircle className="h-4 w-4" strokeWidth={1.75} aria-hidden />
+            LINE でお問い合わせ（{siteConfig.lineId}）
           </a>
           <a
             href={siteConfig.instagram}
@@ -231,7 +246,7 @@ export default function ContactForm() {
 
       <fieldset>
         <legend className={labelCls}>ご希望の連絡方法{req}</legend>
-        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-5">
           {CONTACT_METHODS.map((m) => (
             <label
               key={m}

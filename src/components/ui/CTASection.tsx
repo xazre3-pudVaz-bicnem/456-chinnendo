@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Phone, Instagram, Mail } from "lucide-react";
+import { Phone, Instagram, Mail, MessageCircle } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import ImagePlaceholder from "./ImagePlaceholder";
 import Reveal from "./Reveal";
@@ -43,6 +43,15 @@ export default function CTASection() {
               <span className="font-heading text-lg tracking-wide">
                 {siteConfig.phone}
               </span>
+            </a>
+            <a
+              href={siteConfig.line}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2.5 bg-[#06C755] px-6 py-4 text-white transition-opacity hover:opacity-90"
+            >
+              <MessageCircle className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+              <span className="text-sm tracking-wide">公式LINEで相談する（{siteConfig.lineId}）</span>
             </a>
             <div className="grid grid-cols-2 gap-3">
               <Link

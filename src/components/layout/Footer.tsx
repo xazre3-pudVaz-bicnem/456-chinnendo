@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Instagram } from "lucide-react";
+import { Phone, Instagram, MessageCircle } from "lucide-react";
 import { siteConfig, FOOTER_LINKS } from "@/data/site";
 
 export default function Footer() {
@@ -39,6 +39,15 @@ export default function Footer() {
                 <Instagram className="h-5 w-5" strokeWidth={1.5} aria-hidden />
               </a>
               <a
+                href={siteConfig.line}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`公式LINE ${siteConfig.lineId}（新しいタブで開きます）`}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-paper-200/25 transition-colors hover:bg-paper-50/10"
+              >
+                <MessageCircle className="h-5 w-5" strokeWidth={1.5} aria-hidden />
+              </a>
+              <a
                 href={siteConfig.phoneTel}
                 className="flex items-center gap-2 text-paper-50 transition-colors hover:text-wakaba-300"
               >
@@ -46,6 +55,9 @@ export default function Footer() {
                 <span className="font-heading text-lg">{siteConfig.phone}</span>
               </a>
             </div>
+            <p className="mt-3 text-xs text-paper-200/60">
+              公式LINE：{siteConfig.lineId}
+            </p>
           </div>
 
           {/* サービス */}

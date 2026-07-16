@@ -55,7 +55,7 @@ npm start       # 本番サーバー
 
 1. GitHub 等にプッシュし、Vercel でインポート。
 2. 環境変数を設定：
-   - `NEXT_PUBLIC_SITE_URL`（本番ドメイン。例：`https://456chinnendo.jp`）
+   - `NEXT_PUBLIC_SITE_URL`（本番ドメイン：`https://www.456chinnendo.com`）
 3. デプロイ。
 
 ## 確定済みの事業情報（2026-07-16 更新）

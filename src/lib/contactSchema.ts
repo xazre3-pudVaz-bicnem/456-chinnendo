@@ -10,7 +10,7 @@ export const SERVICE_OPTIONS = [
 ] as const;
 
 /** 希望する連絡方法 */
-export const CONTACT_METHODS = ["電話", "メール", "Instagram", "どちらでも"] as const;
+export const CONTACT_METHODS = ["電話", "メール", "LINE", "Instagram", "どれでも"] as const;
 
 /**
  * お問い合わせフォームのバリデーション（クライアント・サーバー共通）。
