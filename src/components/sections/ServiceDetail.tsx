@@ -65,7 +65,7 @@ export default function ServiceDetail({ service }: { service: Service }) {
           <Reveal delay={100}>
             <ImagePlaceholder
               src={service.image}
-              alt={`${service.title}の作業イメージ`}
+              alt={`千葉県での${service.title}の作業の様子`}
               label={service.imageLabel}
               ratio="4 / 3"
               sizes="(max-width: 1024px) 100vw, 50vw"

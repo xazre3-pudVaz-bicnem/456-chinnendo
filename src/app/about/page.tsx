@@ -95,14 +95,19 @@ export default function AboutPage() {
             </div>
           </Reveal>
           <Reveal delay={100}>
-            <ImagePlaceholder
-              src="staff-main.jpg"
-              alt="456ちんねん堂のスタッフ"
-              label="スタッフ写真"
-              ratio="4 / 5"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="mx-auto max-w-sm border border-paper-300"
-            />
+            <figure className="mx-auto max-w-sm">
+              <ImagePlaceholder
+                src="staff-main.jpg"
+                alt="千葉県の墓地でお墓のまわりを清掃する456ちんねん堂のスタッフ"
+                label="スタッフ写真"
+                ratio="4 / 5"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="border border-paper-300"
+              />
+              <figcaption className="mt-2 text-center text-xs text-ink-400">
+                実際の作業風景
+              </figcaption>
+            </figure>
           </Reveal>
         </div>
       </section>

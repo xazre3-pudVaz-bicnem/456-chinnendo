@@ -40,21 +40,33 @@ export default function BeforeAfterCard({ item }: { item: WorkCase }) {
           <span className="bg-wakaba-200 px-2.5 py-1 text-xs text-moss-700">
             {item.service}
           </span>
-          {preparing && (
+          {preparing ? (
             <span className="border border-gold-400 px-2.5 py-1 text-xs text-gold-600">
               写真はイメージ・実事例準備中
+            </span>
+          ) : (
+            <span className="border border-moss-500 px-2.5 py-1 text-xs text-moss-600">
+              実際の作業写真
             </span>
           )}
         </div>
         <dl className="mt-4 space-y-1.5 text-sm text-ink-600">
+          {item.condition && (
+            <div className="flex gap-2">
+              <dt className="shrink-0 text-ink-400">お墓の状態</dt>
+              <dd>{item.condition}</dd>
+            </div>
+          )}
           <div className="flex gap-2">
             <dt className="shrink-0 text-ink-400">対応内容</dt>
             <dd>{item.work}</dd>
           </div>
-          <div className="flex gap-2">
-            <dt className="shrink-0 text-ink-400">作業時間</dt>
-            <dd>{item.duration}</dd>
-          </div>
+          {item.duration && (
+            <div className="flex gap-2">
+              <dt className="shrink-0 text-ink-400">作業時間</dt>
+              <dd>{item.duration}</dd>
+            </div>
+          )}
         </dl>
         <p className="mt-3 border-t border-paper-200 pt-3 text-sm leading-relaxed text-ink-500">
           {item.comment}

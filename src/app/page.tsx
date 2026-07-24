@@ -283,7 +283,7 @@ export default function HomePage() {
           <SectionHeading
             en="Before &amp; After"
             title={<>作業前後の様子を<br className="sm:hidden" />写真でご報告します。</>}
-            lead="ご依頼の際は、作業前と作業後の写真を撮影してご報告します。※下記の写真はイメージです。実際の施工事例は準備中です。"
+            lead="実際にご依頼いただいた作業の一例です。お墓の状態を確認しながら、一基一基丁寧に作業し、仕上がりを写真でご報告します。"
             align="center"
           />
           <div className="mt-12 grid grid-cols-1 gap-7 md:grid-cols-2">

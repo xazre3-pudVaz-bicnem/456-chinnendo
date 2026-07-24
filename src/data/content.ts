@@ -87,12 +87,13 @@ export const flowSteps: FlowStep[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/*  作業事例（Before & After）— 実データが無いため準備中               */
+/*  作業事例（Before & After）— 実際の作業写真                          */
 /* ------------------------------------------------------------------ */
 export type WorkCase = {
   status: "ready" | "preparing";
   area: string; // 例: "千葉県内" ※架空の地名は入れない
   service: string;
+  /** 作業時間（不明な場合は空文字。カードでは非表示になる）*/
   duration: string;
   condition: string;
   work: string;
@@ -103,34 +104,33 @@ export type WorkCase = {
   afterLabel: string;
 };
 
-// 要確認：実際の作業写真・内容が揃うまでは status:"preparing" のまま
-// （「施工事例準備中」の表示が付き、写真は「イメージ」である旨を明記します）。
-// 実事例に切り替える際は、実際の写真に差し替えたうえで status:"ready" にし、
-// エリア・作業時間・コメントを実データへ更新してください。架空の地名・実績は掲載しない。
+// 実際にご依頼いただいた作業の写真です（お客様提供・墓名や個人情報はモザイク処理済み）。
+// ※ 事業エリアが千葉県内のため area は「千葉県内」。市区町村や作業時間など、
+//    確認できていない情報は書かない（duration は空欄＝非表示）。
 export const workCases: WorkCase[] = [
   {
-    status: "preparing",
+    status: "ready",
     area: "千葉県内",
     service: "お墓掃除代行",
-    duration: "—",
-    condition: "実事例は準備中",
-    work: "墓石の水洗い・拭き上げ、雑草取り、ゴミの回収",
+    duration: "",
+    condition: "敷地一面につる草・雑草が繁茂",
+    work: "つる草・雑草の除去、墓石まわり・敷地の清掃、ゴミの回収",
     comment:
-      "写真はイメージです。実際の作業写真が準備でき次第、Before / After を掲載します。",
+      "長い間お参りが難しく、つる草が敷地一面に広がっていたお墓です。根から取り除き、墓石まわりまで清掃しました。作業前後の写真でご報告しています。",
     beforeImage: "before-01.jpg",
     afterImage: "after-01.jpg",
     beforeLabel: "清掃前写真①",
     afterLabel: "清掃後写真①",
   },
   {
-    status: "preparing",
+    status: "ready",
     area: "千葉県内",
-    service: "お墓掃除代行",
-    duration: "—",
-    condition: "実事例は準備中",
-    work: "墓石まわりの清掃、香炉・花立て周辺のお手入れ",
+    service: "お墓参り・お墓掃除代行",
+    duration: "",
+    condition: "雑草が伸び、墓前まわりが荒れた状態",
+    work: "雑草の除去、墓石の清掃、お花・お線香のお供え、お参り",
     comment:
-      "写真はイメージです。施工事例の写真が揃い次第、こちらでご紹介します。",
+      "雑草を取り除いて墓石を清掃したあと、お花とお線香をお供えし、心を込めてお参りしました。仕上がりの様子を写真でご報告しています。",
     beforeImage: "before-02.jpg",
     afterImage: "after-02.jpg",
     beforeLabel: "清掃前写真②",
